@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BearNote</string>
+    <string name="detail">明细</string>
+    <string name="chart">图表</string>
+    <string name="note">记账</string>
+    <string name="assets">账户</string>
+    <string name="personal">我的</string>
+    <string name="contentDescription">contentDescription</string>
+</resources>
