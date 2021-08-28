@@ -1,4 +1,4 @@
-package cloud.runningpig.bearnote.logic.tools
+package cloud.runningpig.bearnote.logic.utils
 
 import android.util.Log
 import android.widget.Toast

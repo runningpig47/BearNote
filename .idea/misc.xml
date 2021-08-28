@@ -3,23 +3,88 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/circle_white.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic1.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic10.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic11.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic12.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic13.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic14.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic15.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic16.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic17.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic18.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic19.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic2.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic20.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic21.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic22.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic23.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic24.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic25.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic26.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic27.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic28.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic29.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic3.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic30.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic31.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic32.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic33.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic34.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic35.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic36.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic37.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic38.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic39.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic4.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic40.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic5.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic6.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic7.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic8.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic9.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_add.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_assets.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_assets_color.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_assets_gray.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_btc.xml" value="0.20052083333333334" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_calendar.xml" value="0.31203703703703706" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_chart_color.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_chart_gray.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_detail_color.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_detail_gray.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_doge.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_eth.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_fallback.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_note.xml" value="0.31203703703703706" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_personal_color.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/ic_personal_gray.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/oval_solid.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/oval_solid_eeeeee.xml" value="0.3212962962962963" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/oval_solid_ff5722.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/selector_equals_bg.xml" value="0.31203703703703706" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/selector_ic_assets.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/selector_ic_chart.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/selector_ic_detail.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/selector_ic_personal.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/selector_item_bg.xml" value="0.3578125" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/drawable/selector_xtextview_bg.xml" value="0.3578125" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/activity_main.xml" value="0.33094994892747703" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/activity_note.xml" value="0.3375" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/assets_fragment.xml" value="0.3375" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/category_item.xml" value="0.5" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/chart_fragment.xml" value="0.3375" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/detail_fragment.xml" value="0.3375" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/fragment_blank.xml" value="0.3375" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/income_fragment.xml" value="0.3375" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/input_edit_layout.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/input_layout.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/personal_fragment.xml" value="0.3375" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/spending_fragment.xml" value="0.3375" />
+        <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/layout/transfer_fragment.xml" value="0.3375" />
         <entry key="..\:/AndroidStudioProjects/BearNote/app/src/main/res/menu/menu_navigation.xml" value="0.3375" />
       </map>
     </option>

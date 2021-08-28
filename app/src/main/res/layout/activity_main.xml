@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data />
+    <data>
+
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -49,7 +51,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:maxImageSize="48dp"
+            app:maxImageSize="50dp"
             app:pressedTranslationZ="0dp"
             app:rippleColor="@android:color/white"
             app:tint="#FFAA36"

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/f8cd1e" android:state_focused="false" android:state_pressed="true" />
+    <!-- 没有焦点时的背景图片 -->
+    <item android:drawable="@color/ffda44" android:state_window_focused="false" />
+    <!-- 默认时的背景图片-->
+    <item android:drawable="@color/ffda44" />
+</selector>
