@@ -11,6 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BearNote">
         <activity
+            android:name=".ui.note.category.AddCategoryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.note.category.CategoryActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.note.NoteActivity"
             android:exported="true" />
         <activity

@@ -1,22 +1,26 @@
 package cloud.runningpig.bearnote.logic.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import cloud.runningpig.bearnote.logic.model.NoteCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteCategoryDao {
 
-    @Query("SELECT * FROM note_category WHERE sort = :sort")
+    @Query("SELECT * FROM note_category WHERE sort = :sort ORDER BY `order` ASC")
     fun loadBySort(sort: Int): Flow<List<NoteCategory>>
 
-    @Insert
-    suspend fun insertDefault(defaultList: List<NoteCategory>)
+    @Update
+    suspend fun updateList(list: List<NoteCategory>)
 
-    @Query("DELETE FROM note_category")
-    suspend fun deleteAll()
+    @Delete
+    suspend fun delete(list: List<NoteCategory>)
+
+    @Query("SELECT MAX(`order`) FROM note_category WHERE sort = :sort")
+    fun queryMaxOrder(sort: Int): Flow<Int>
+
+    @Insert
+    suspend fun insert(noteCategory: NoteCategory)
 
 //    @Query("SELECT * FROM user")
 //    fun getAll(): List<User>

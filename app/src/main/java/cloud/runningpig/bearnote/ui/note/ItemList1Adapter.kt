@@ -27,7 +27,8 @@ class ItemList1Adapter(private val onItemClick: (position: Int) -> Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val noteCategory = getItem(position)
         holder.itemView.setOnClickListener {
-            if (position != currentList.lastIndex) {
+            // TODO 添加或删除数据后，参数中的position点击获取到的还是旧数据的position
+            if (holder.bindingAdapterPosition != currentList.lastIndex) {
                 onItemClick(position)
                 mSelectedPosition = holder.bindingAdapterPosition
                 notifyDataSetChanged()
@@ -48,7 +49,7 @@ class ItemList1Adapter(private val onItemClick: (position: Int) -> Unit) :
                 if (p1 == p2) {
                     imageView.setBackgroundResource(R.drawable.oval_solid_ff5722)
                 } else {
-                    imageView.setBackgroundResource(R.drawable.oval_solid_eeeeee)
+                    imageView.setBackgroundResource(R.drawable.oval_solid_f5f5f5)
                 }
             }
         }
@@ -69,4 +70,5 @@ class ItemList1Adapter(private val onItemClick: (position: Int) -> Unit) :
             return oldItem.name == newItem.name
         }
     }
+
 }

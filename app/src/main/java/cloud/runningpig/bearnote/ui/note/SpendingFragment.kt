@@ -1,5 +1,6 @@
 package cloud.runningpig.bearnote.ui.note
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import cloud.runningpig.bearnote.databinding.SpendingFragmentBinding
 import cloud.runningpig.bearnote.logic.model.NoteCategory
 import cloud.runningpig.bearnote.logic.utils.Injector
 import cloud.runningpig.bearnote.logic.utils.ViewUtil
+import cloud.runningpig.bearnote.ui.note.category.CategoryActivity
 import java.util.*
 
 private const val ARG_PARAM1 = "sort"
@@ -50,7 +52,9 @@ class SpendingFragment : Fragment() {
                 recyclerViewUp()
                 binding.spendingRecyclerView.scrollToPosition(position)
             } else {
-                // TODO
+                val intent = Intent(context, CategoryActivity::class.java)
+                intent.putExtra("page", param1)
+                context?.startActivity(intent)
             }
         }
         binding.spendingRecyclerView.adapter = adapter
@@ -67,6 +71,11 @@ class SpendingFragment : Fragment() {
             )
             list.add(setting)
             adapter.submitList(list)
+            // 设置-删除所有类别后，回来键盘应该是关闭的
+            // TODO 是否需要修改观察的page字段？
+            if (it.isEmpty()) {
+                recyclerViewDown()
+            }
         }
         viewModel.page.observe(this.viewLifecycleOwner) {
             recyclerViewDown()
@@ -99,13 +108,6 @@ class SpendingFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @return A new instance of fragment BlankFragment.
-         */
         @JvmStatic
         fun newInstance(param1: Int) =
             SpendingFragment().apply {

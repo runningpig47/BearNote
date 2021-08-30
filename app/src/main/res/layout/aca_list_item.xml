@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:paddingBottom="24dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/aca_list_imageView"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:background="@drawable/oval_solid_ff5722"
+            android:scaleType="centerInside"
+            tools:src="@drawable/ic1" />
+    </FrameLayout>
+</layout>
