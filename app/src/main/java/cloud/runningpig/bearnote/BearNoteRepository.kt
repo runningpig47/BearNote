@@ -1,10 +1,18 @@
 package cloud.runningpig.bearnote
 
 import cloud.runningpig.bearnote.logic.dao.NoteCategoryDao
+import cloud.runningpig.bearnote.logic.dao.NoteDao
+import cloud.runningpig.bearnote.logic.model.Note
 import cloud.runningpig.bearnote.logic.model.NoteCategory
 
-class BearNoteRepository private constructor(private val noteCategoryDao: NoteCategoryDao) {
+class BearNoteRepository private constructor(
+    private val noteCategoryDao: NoteCategoryDao,
+    private val noteDao: NoteDao
+) {
 
+    /**
+     * 类别管理相关
+     */
     fun loadBySort(sort: Int) = noteCategoryDao.loadBySort(sort)
 
     suspend fun updateList(list: List<NoteCategory>) = noteCategoryDao.updateList(list)
@@ -15,13 +23,18 @@ class BearNoteRepository private constructor(private val noteCategoryDao: NoteCa
 
     suspend fun insert(noteCategory: NoteCategory) = noteCategoryDao.insert(noteCategory)
 
+    /**
+     * 记账相关
+     */
+    suspend fun insertNote(note: Note) = noteDao.insert(note)
+
     companion object {
         @Volatile
         private var INSTANCE: BearNoteRepository? = null
 
-        fun getInstance(noteCategoryDao: NoteCategoryDao) =
+        fun getInstance(noteCategoryDao: NoteCategoryDao, noteDao: NoteDao) =
             INSTANCE ?: synchronized(this) {
-                val instance = BearNoteRepository(noteCategoryDao)
+                val instance = BearNoteRepository(noteCategoryDao, noteDao)
                 INSTANCE = instance
                 instance
             }

@@ -18,7 +18,8 @@
             android:exported="true" />
         <activity
             android:name=".ui.note.NoteActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

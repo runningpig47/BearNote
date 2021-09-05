@@ -1,6 +1,7 @@
 package cloud.runningpig.bearnote.ui.note
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -37,9 +38,11 @@ class NoteActivity : AppCompatActivity() {
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                Log.d("test20210904", "onPageSelected: $position")
                 viewModel.page.value = position
             }
         })
+        binding.noteViewPager2.offscreenPageLimit = 2
         TabLayoutMediator(binding.noteTabLayout, binding.noteViewPager2) { tab, position ->
             when (position) {
                 0 -> tab.text = getString(R.string.spending)

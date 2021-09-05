@@ -1,5 +1,6 @@
 package cloud.runningpig.bearnote.ui.note
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +11,7 @@ import cloud.runningpig.bearnote.databinding.CategoryItemBinding
 import cloud.runningpig.bearnote.logic.model.IconMap
 import cloud.runningpig.bearnote.logic.model.NoteCategory
 
-class ItemList1Adapter(private val onItemClick: (position: Int) -> Unit) :
+class ItemList1Adapter(private val onItemClick: (position: Int, item: NoteCategory?) -> Unit) :
     ListAdapter<NoteCategory, ItemList1Adapter.ViewHolder>(ItemComparator()) {
     private var mSelectedPosition: Int = -1
 
@@ -29,11 +30,11 @@ class ItemList1Adapter(private val onItemClick: (position: Int) -> Unit) :
         holder.itemView.setOnClickListener {
             // TODO 添加或删除数据后，参数中的position点击获取到的还是旧数据的position
             if (holder.bindingAdapterPosition != currentList.lastIndex) {
-                onItemClick(position)
+                onItemClick(position, noteCategory)
                 mSelectedPosition = holder.bindingAdapterPosition
                 notifyDataSetChanged()
             } else {
-                onItemClick(-1)
+                onItemClick(-1, null)
             }
         }
         holder.bind(noteCategory, position, mSelectedPosition)
@@ -46,6 +47,7 @@ class ItemList1Adapter(private val onItemClick: (position: Int) -> Unit) :
             binding.apply {
                 textView.text = noteCategory.name
                 imageView.setImageResource(IconMap.map[noteCategory.icon] ?: R.drawable.ic_error)
+                Log.d("test20210904", "p1: $p1, p2: $p2")
                 if (p1 == p2) {
                     imageView.setBackgroundResource(R.drawable.oval_solid_ff5722)
                 } else {

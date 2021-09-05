@@ -4,13 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import cloud.runningpig.bearnote.logic.model.Converters
+import cloud.runningpig.bearnote.logic.model.Note
 import cloud.runningpig.bearnote.logic.model.NoteCategory
 
-@Database(entities = [NoteCategory::class], version = 1)
+@Database(entities = [NoteCategory::class, Note::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class BearNoteDatabase : RoomDatabase() {
 
     abstract fun noteCategoryDao(): NoteCategoryDao
+    abstract fun noteDao(): NoteDao
 
     private class BearNoteDatabaseCallback :
         RoomDatabase.Callback() {

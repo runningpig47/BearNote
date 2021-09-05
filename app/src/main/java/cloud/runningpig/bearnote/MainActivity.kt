@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.itemIconTintList = null
         val fragmentAdapter = FragmentAdapter(supportFragmentManager, lifecycle, fragments)
         binding.viewPager2.adapter = fragmentAdapter
+        binding.viewPager2.isUserInputEnabled = false
     }
 
     private fun initEvent() {

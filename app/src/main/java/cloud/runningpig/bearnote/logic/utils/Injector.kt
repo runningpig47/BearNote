@@ -17,17 +17,23 @@ private var currentInjector: ViewModelFactoryProvider =
     DefaultViewModelProvider
 
 private object DefaultViewModelProvider : ViewModelFactoryProvider {
+
     private fun getBearNoteRepository(context: Context): BearNoteRepository {
         return BearNoteRepository.getInstance(
-            noteCategoryDao(context)
+            noteCategoryDao(context),
+            noteDao(context)
         )
     }
 
     private fun noteCategoryDao(context: Context) =
         BearNoteDatabase.getDatabase(context).noteCategoryDao()
 
+    private fun noteDao(context: Context) =
+        BearNoteDatabase.getDatabase(context).noteDao()
+
     override fun providerSpendingViewModelFactory(context: Context): SpendingViewModelFactory {
         val repository = getBearNoteRepository(context)
         return SpendingViewModelFactory(repository)
     }
+
 }
