@@ -9,8 +9,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import cloud.runningpig.bearnote.logic.model.Converters
 import cloud.runningpig.bearnote.logic.model.Note
 import cloud.runningpig.bearnote.logic.model.NoteCategory
+import cloud.runningpig.bearnote.logic.model.NoteDetail
 
-@Database(entities = [NoteCategory::class, Note::class], version = 1)
+@Database(entities = [NoteCategory::class, Note::class], views = [NoteDetail::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class BearNoteDatabase : RoomDatabase() {
 

@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import cloud.runningpig.bearnote.BearNoteApplication
+import cloud.runningpig.bearnote.BearNoteRepository
 import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.DetailFragmentBinding
+import cloud.runningpig.bearnote.logic.dao.BearNoteDatabase
 import cloud.runningpig.bearnote.ui.custom.CalendarBean
 import cloud.runningpig.bearnote.ui.custom.CustomCalendarView
 import com.google.android.material.tabs.TabLayoutMediator
@@ -20,8 +23,13 @@ private const val ARG_PARAM1 = "test"
 class DetailFragment : Fragment() {
 
     private var param1: Int? = null
-    val viewModel by lazy {
-        ViewModelProvider(this)[DetailViewModel::class.java]
+
+    val viewModel: DetailViewModel by activityViewModels {
+        val repository = BearNoteRepository.getInstance(
+            BearNoteDatabase.getDatabase(BearNoteApplication.context).noteCategoryDao(),
+            BearNoteDatabase.getDatabase(BearNoteApplication.context).noteDao()
+        )
+        DetailViewModelFactory(repository)
     }
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
@@ -69,6 +77,7 @@ class DetailFragment : Fragment() {
         binding.dfLinearLayout3.setOnClickListener {
             binding.dfCustomCalendarView.goThisMonth()
             binding.dfTextView2.text = todayString
+            viewModel.date.value = Date()
         }
         binding.dfCustomCalendarView.setOnMonthChangerListener(object : CustomCalendarView.OnMonthChangerListener {
             override fun onMonthChanger(lastMonth: CalendarBean, newMonth: CalendarBean) {
@@ -82,7 +91,7 @@ class DetailFragment : Fragment() {
             override fun onItemClick(t: CalendarBean) {
                 val s = "${simpleDateFormat.format(t.date)}(${t.weekOfDay})"
                 binding.dfTextView2.text = s
-                // TODO 请求记账&备忘数据
+                viewModel.date.value = t.date
             }
         })
         return binding.root

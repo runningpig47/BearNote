@@ -86,7 +86,7 @@ open class CustomCalendarView : FrameLayout {
                         viewHolder.getRootView().setBackgroundResource(R.drawable.rec_red)
                     } else {
                         isdTextView.setTextColor(ContextCompat.getColor(context, R.color.color_4f4f4f))
-                        isdTextView.setBackgroundResource(R.color.white)
+                        isdTextView.setBackgroundResource(android.R.color.transparent)
                         viewHolder.getRootView().setBackgroundResource(android.R.color.transparent)
                     }
                 } else {

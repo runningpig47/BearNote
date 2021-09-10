@@ -4,6 +4,7 @@ import cloud.runningpig.bearnote.logic.dao.NoteCategoryDao
 import cloud.runningpig.bearnote.logic.dao.NoteDao
 import cloud.runningpig.bearnote.logic.model.Note
 import cloud.runningpig.bearnote.logic.model.NoteCategory
+import java.util.*
 
 class BearNoteRepository private constructor(
     private val noteCategoryDao: NoteCategoryDao,
@@ -27,6 +28,8 @@ class BearNoteRepository private constructor(
      * 记账相关
      */
     suspend fun insertNote(note: Note) = noteDao.insert(note)
+
+    fun queryByDate(from: Date, to: Date) = noteDao.queryByDate(from, to)
 
     companion object {
         @Volatile
