@@ -24,13 +24,13 @@ class NLFListAdapter(private val onItemClick: (position: Int, noteDetail: NoteDe
         holder.itemView.setOnClickListener {
             onItemClick(position, item)
         }
-        holder.bind(item, position)
+        holder.bind(item)
     }
 
     class ViewHolder(private var binding: NlfListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: NoteDetail, position: Int) {
+        fun bind(item: NoteDetail) {
             binding.apply {
                 nliImageView1.setImageResource(IconMap.map[item.categoryIcon] ?: R.drawable.ic_error)
                 nliTextView1.text = item.categoryName

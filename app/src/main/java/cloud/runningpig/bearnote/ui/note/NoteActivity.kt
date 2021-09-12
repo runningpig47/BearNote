@@ -1,7 +1,6 @@
 package cloud.runningpig.bearnote.ui.note
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.ActivityNoteBinding
 import cloud.runningpig.bearnote.logic.utils.Injector
+import cloud.runningpig.bearnote.logic.utils.LogUtil
 import com.google.android.material.tabs.TabLayoutMediator
 
 class NoteActivity : AppCompatActivity() {
@@ -38,7 +38,7 @@ class NoteActivity : AppCompatActivity() {
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                Log.d("test20210904", "onPageSelected: $position")
+                LogUtil.d("test20210904", "onPageSelected: $position")
                 viewModel.page.value = position
             }
         })

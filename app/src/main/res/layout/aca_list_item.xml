@@ -8,8 +8,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:paddingBottom="24dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp">
 
         <ImageView
             android:id="@+id/aca_list_imageView"

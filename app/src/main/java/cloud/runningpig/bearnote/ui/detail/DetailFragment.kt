@@ -6,12 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import cloud.runningpig.bearnote.BearNoteApplication
 import cloud.runningpig.bearnote.BearNoteRepository
 import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.DetailFragmentBinding
 import cloud.runningpig.bearnote.logic.dao.BearNoteDatabase
+import cloud.runningpig.bearnote.logic.model.DailyAmount
+import cloud.runningpig.bearnote.logic.utils.LogUtil
+import cloud.runningpig.bearnote.ui.custom.BaseRecyclerAdapter
 import cloud.runningpig.bearnote.ui.custom.CalendarBean
 import cloud.runningpig.bearnote.ui.custom.CustomCalendarView
 import com.google.android.material.tabs.TabLayoutMediator
@@ -24,6 +28,12 @@ class DetailFragment : Fragment() {
 
     private var param1: Int? = null
 
+    private var _binding: DetailFragmentBinding? = null
+    private val binding get() = _binding!!
+
+    private val simpleDateFormat = SimpleDateFormat("M月d日", Locale.getDefault())
+    private val simpleDateFormat2 = SimpleDateFormat("yyyy年M月", Locale.getDefault())
+
     val viewModel: DetailViewModel by activityViewModels {
         val repository = BearNoteRepository.getInstance(
             BearNoteDatabase.getDatabase(BearNoteApplication.context).noteCategoryDao(),
@@ -31,9 +41,6 @@ class DetailFragment : Fragment() {
         )
         DetailViewModelFactory(repository)
     }
-    private var _binding: DetailFragmentBinding? = null
-    private val binding get() = _binding!!
-    private val simpleDateFormat = SimpleDateFormat("M月d日", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,10 +70,11 @@ class DetailFragment : Fragment() {
         }.attach()
         // 处理日历相关
         val calendarBean = binding.dfCustomCalendarView.getCurrentDay()
+        binding.dfTextView1.text = simpleDateFormat2.format(calendarBean.date)
         val todayString = "${simpleDateFormat.format(calendarBean.date)}(${calendarBean.weekOfDay})"
         binding.dfTextView2.text = todayString
         binding.dfTextView2.setOnClickListener {
-            binding.dfCustomCalendarView.goSelectedMonth()
+            binding.dfCustomCalendarView.goSelectedDay()
         }
         binding.dfLinearLayout1.setOnClickListener {
             binding.dfCustomCalendarView.goLastMonth()
@@ -75,15 +83,14 @@ class DetailFragment : Fragment() {
             binding.dfCustomCalendarView.goNextMonth()
         }
         binding.dfLinearLayout3.setOnClickListener {
-            binding.dfCustomCalendarView.goThisMonth()
+            binding.dfCustomCalendarView.goToday()
             binding.dfTextView2.text = todayString
             viewModel.date.value = Date()
         }
         binding.dfCustomCalendarView.setOnMonthChangerListener(object : CustomCalendarView.OnMonthChangerListener {
             override fun onMonthChanger(lastMonth: CalendarBean, newMonth: CalendarBean) {
                 val newMonthDate = newMonth.date
-                val simpleDateFormat = SimpleDateFormat("yyyy年M月", Locale.getDefault())
-                val newMonthString: String = simpleDateFormat.format(newMonthDate)
+                val newMonthString: String = simpleDateFormat2.format(newMonthDate)
                 binding.dfTextView1.text = newMonthString
             }
         })
@@ -94,6 +101,35 @@ class DetailFragment : Fragment() {
                 viewModel.date.value = t.date
             }
         })
+        binding.dfCustomCalendarView.setOnSubscribeListener(object : CustomCalendarView.OnSubscribeListener {
+            override fun subscribe(mAdapter: BaseRecyclerAdapter<CalendarBean>, mDataList: ArrayList<CalendarBean>) {
+                for (i in 0 until mDataList.size) {
+                    if (mDataList[i].dayType == 0) { // 只订阅当月日历
+                        val date = mDataList[i].date
+                        val liveData = viewModel.queryDailyAmount(date)
+                        val observer = Observer<List<DailyAmount>> {
+                            if (it.isNotEmpty()) {
+                                mDataList[i].dailyAmount = it
+                                mAdapter.notifyItemChanged(i)
+                                LogUtil.d("test2021091201", "订阅非空: position: $i, $it")
+                            }
+                        }
+                        liveData.observeForever(observer)
+                        viewModel.map[liveData] = observer
+                    }
+                }
+            }
+        })
+        binding.dfCustomCalendarView.setUnsubscribeListener(object : CustomCalendarView.UnsubscribeListener {
+            override fun unsubscribe() {
+                for ((key, value) in viewModel.map) {
+                    key.removeObserver(value)
+                    LogUtil.d("test2021091201", "${key.hasObservers()}, ${key.hasActiveObservers()}")
+                }
+                viewModel.map.clear()
+            }
+        })
+        binding.dfCustomCalendarView.initData(null)
         return binding.root
     }
 
@@ -105,6 +141,17 @@ class DetailFragment : Fragment() {
                     putInt(ARG_PARAM1, param1)
                 }
             }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        for ((key, value) in viewModel.map) {
+            key.removeObserver(value)
+            if (key.hasObservers()) {
+                throw RuntimeException("在Destroy时监听存在")
+            }
+        }
+        viewModel.map.clear()
     }
 
 }

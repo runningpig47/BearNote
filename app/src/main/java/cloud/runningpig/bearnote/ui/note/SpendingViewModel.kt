@@ -79,7 +79,7 @@ class SpendingViewModel(private val bearNoteRepository: BearNoteRepository) : Vi
     // 验证记账的输入数据是否有效
     fun isNoteEntryValid(noteCategoryId: Int, amount: Double, date: Date, accountId: Int): Boolean {
         // TODO 以后修改验证细节
-        if (noteCategoryId == -1 || amount <= 0 || date == null || accountId == -1) {
+        if (noteCategoryId == -1 || amount <= 0 || accountId == -1) {
             return false
         }
         return true

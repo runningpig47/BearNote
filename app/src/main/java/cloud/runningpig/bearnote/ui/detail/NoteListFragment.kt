@@ -21,6 +21,9 @@ class NoteListFragment : Fragment() {
     private var param2: String? = null
     private lateinit var adapter: NLFListAdapter
 
+    private var _binding: FragmentNoteListBinding? = null
+    private val binding get() = _binding!!
+
     val viewModel: DetailViewModel by activityViewModels {
         val repository = BearNoteRepository.getInstance(
             BearNoteDatabase.getDatabase(BearNoteApplication.context).noteCategoryDao(),
@@ -28,9 +31,6 @@ class NoteListFragment : Fragment() {
         )
         DetailViewModelFactory(repository)
     }
-
-    private var _binding: FragmentNoteListBinding? = null
-    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,20 +57,9 @@ class NoteListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.queryByDate.observe(this.viewLifecycleOwner) {
             adapter.submitList(it)
         }
-
-//        viewModel.date.observe(this.viewLifecycleOwner) { date: Date ->
-//            val startOfDay = viewModel.getStartOfDay(date)
-//            val endOfDay = viewModel.getEndOfDay(date)
-//            Log.d("test20210906", "date: $date")
-//            viewModel.queryByDate(startOfDay, endOfDay).observe(this.viewLifecycleOwner) {
-//                Log.d("test20210906", "startOfDay: $startOfDay, endOfDay: $endOfDay")
-//
-//            }
-//        }
     }
 
     companion object {

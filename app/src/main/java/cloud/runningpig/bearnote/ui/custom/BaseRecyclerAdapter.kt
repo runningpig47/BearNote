@@ -1,5 +1,6 @@
 package cloud.runningpig.bearnote.ui.custom
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ abstract class BaseRecyclerAdapter<T>(context: Context, dataList: List<T>, resId
         return ViewHolder(itemView)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val t: T = mData[position]
         holder.getRootView().setOnClickListener {

@@ -17,15 +17,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
+            android:background="#ffda44"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tabGravity="center"
-            android:background="#ffda44"
             app:tabIndicatorColor="#000000"
-            app:tabTextColor="#000000"
             app:tabTextAppearance="@style/tabText"
-          >
+            app:tabTextColor="#000000">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"

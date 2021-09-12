@@ -1,6 +1,6 @@
 package cloud.runningpig.bearnote.ui.note
 
-import android.util.Log
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,6 +10,7 @@ import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.CategoryItemBinding
 import cloud.runningpig.bearnote.logic.model.IconMap
 import cloud.runningpig.bearnote.logic.model.NoteCategory
+import cloud.runningpig.bearnote.logic.utils.LogUtil
 
 class ItemList1Adapter(private val onItemClick: (position: Int, item: NoteCategory?) -> Unit) :
     ListAdapter<NoteCategory, ItemList1Adapter.ViewHolder>(ItemComparator()) {
@@ -25,6 +26,7 @@ class ItemList1Adapter(private val onItemClick: (position: Int, item: NoteCatego
         return ViewHolder.create(parent)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val noteCategory = getItem(position)
         holder.itemView.setOnClickListener {
@@ -47,7 +49,7 @@ class ItemList1Adapter(private val onItemClick: (position: Int, item: NoteCatego
             binding.apply {
                 textView.text = noteCategory.name
                 imageView.setImageResource(IconMap.map[noteCategory.icon] ?: R.drawable.ic_error)
-                Log.d("test20210904", "p1: $p1, p2: $p2")
+                LogUtil.d("test20210904", "p1: $p1, p2: $p2")
                 if (p1 == p2) {
                     imageView.setBackgroundResource(R.drawable.oval_solid_ff5722)
                 } else {

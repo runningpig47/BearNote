@@ -15,8 +15,8 @@
         <cloud.runningpig.bearnote.ui.custom.TitleLayout
             android:id="@+id/acl_titleLayout"
             android:layout_width="0dp"
-            android:background="#ffda44"
             android:layout_height="wrap_content"
+            android:background="#ffda44"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

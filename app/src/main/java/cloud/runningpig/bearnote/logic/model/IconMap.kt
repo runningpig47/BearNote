@@ -3,6 +3,7 @@ package cloud.runningpig.bearnote.logic.model
 import cloud.runningpig.bearnote.R
 
 object IconMap {
+
     val map = mutableMapOf(
         "ic1" to R.drawable.ic1,
         "ic2" to R.drawable.ic2,
@@ -46,4 +47,5 @@ object IconMap {
         "ic40" to R.drawable.ic40,
         "setting" to R.drawable.ic_setting,
     )
+
 }

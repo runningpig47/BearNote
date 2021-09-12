@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -93,7 +92,7 @@ class SpendingFragment : Fragment(), View.OnClickListener {
         viewModel.page.observe(this.viewLifecycleOwner) {
             recyclerViewDown()
             val p = adapter.getSelectedPosition()
-            Log.d("test20210904", "viewModel.page: $it, adapter.getSelectedPosition: $p")
+            LogUtil.d("test20210904", "viewModel.page: $it, adapter.getSelectedPosition: $p")
             adapter.setSelectedPosition(-1)
             adapter.notifyItemChanged(p) // 清除选中背景
         }
@@ -280,12 +279,12 @@ class SpendingFragment : Fragment(), View.OnClickListener {
         startDate.set(2018, 0, 1)
         val endDate = Calendar.getInstance()
         //时间选择器，自定义布局
-        pvCustomTime1 = TimePickerBuilder(context) { date, v -> //选中事件回调
+        pvCustomTime1 = TimePickerBuilder(context) { date, _ -> //选中事件回调
             val format = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
             viewModel.date = date
             binding.view11.dateTextView.text = format.format(viewModel.date)
             binding.view11.dateImageView.visibility = View.GONE
-            Log.d("testDate", "date: $date")
+            LogUtil.d("testDate", "date: $date")
         }
             .setContentTextSize(20)
             .setDate(selectedDate)

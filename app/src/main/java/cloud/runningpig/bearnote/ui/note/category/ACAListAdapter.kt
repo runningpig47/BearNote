@@ -1,5 +1,6 @@
 package cloud.runningpig.bearnote.ui.note.category
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -24,6 +25,7 @@ class ACAListAdapter(private val onItemClick: (position: Int) -> Unit) :
         return ViewHolder.create(parent)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val icon = getItem(position)
         holder.itemView.setOnClickListener {

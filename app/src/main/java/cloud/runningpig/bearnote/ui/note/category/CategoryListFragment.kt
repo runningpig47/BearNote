@@ -1,7 +1,6 @@
 package cloud.runningpig.bearnote.ui.note.category
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

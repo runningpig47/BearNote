@@ -65,9 +65,9 @@
         <cloud.runningpig.bearnote.ui.custom.NTextView
             android:id="@+id/textView1"
             style="@style/inputNumberTextView"
-            android:background="@drawable/selector_xtextview_bg"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@drawable/selector_xtextview_bg"
             android:text="7"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             app:layout_constraintEnd_toStartOf="@+id/guideline6"
@@ -77,9 +77,9 @@
         <cloud.runningpig.bearnote.ui.custom.NTextView
             android:id="@+id/textView2"
             style="@style/inputNumberTextView"
-            android:background="@drawable/selector_xtextview_bg"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@drawable/selector_xtextview_bg"
             android:text="8"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             app:layout_constraintEnd_toStartOf="@+id/guideline7"
@@ -89,9 +89,9 @@
         <cloud.runningpig.bearnote.ui.custom.NTextView
             android:id="@+id/textView4"
             style="@style/inputNumberTextView"
-            android:background="@drawable/selector_xtextview_bg"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@drawable/selector_xtextview_bg"
             android:text="9"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
@@ -150,8 +150,8 @@
             android:id="@+id/textView9"
             style="@style/inputNumberTextView"
             android:layout_width="0dp"
-            android:background="@drawable/selector_xtextview_bg"
             android:layout_height="0dp"
+            android:background="@drawable/selector_xtextview_bg"
             android:text="2"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
             app:layout_constraintEnd_toStartOf="@+id/guideline7"
@@ -162,8 +162,8 @@
             android:id="@+id/textView10"
             style="@style/inputNumberTextView"
             android:layout_width="0dp"
-            android:background="@drawable/selector_xtextview_bg"
             android:layout_height="0dp"
+            android:background="@drawable/selector_xtextview_bg"
             android:text="3"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
@@ -196,9 +196,9 @@
 
         <TextView
             android:id="@+id/textView13"
+            style="@style/inputNumberTextView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            style="@style/inputNumberTextView"
             android:background="@drawable/selector_equals_bg"
             android:text="完成"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -223,8 +223,8 @@
             style="@style/inputNumberTextView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:text="+"
             android:background="@drawable/selector_xtextview_bg"
+            android:text="+"
             app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
@@ -232,24 +232,24 @@
 
         <ImageView
             android:id="@+id/imageView2"
+            style="@style/inputNumberTextView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@drawable/selector_xtextview_bg"
             android:scaleType="centerInside"
-            style="@style/inputNumberTextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            android:background="@drawable/selector_xtextview_bg"
             app:layout_constraintTop_toTopOf="@+id/guideline5"
             app:srcCompat="@drawable/ic_fallback" />
 
         <LinearLayout
             android:id="@+id/dateLayout"
+            style="@style/inputNumberTextView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/selector_xtextview_bg"
             android:orientation="horizontal"
-            style="@style/inputNumberTextView"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
@@ -257,18 +257,18 @@
 
             <ImageView
                 android:id="@+id/dateImageView"
-                android:src="@drawable/ic_calendar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_calendar" />
 
             <TextView
                 android:id="@+id/dateTextView"
                 style="@style/inputNumberTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:clickable="false"
                 android:focusable="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="今天"
                 android:textSize="16sp" />
         </LinearLayout>

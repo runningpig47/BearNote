@@ -1,6 +1,8 @@
 package cloud.runningpig.bearnote.ui.custom
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
@@ -17,7 +19,6 @@ import kotlin.collections.ArrayList
 open class CustomCalendarView : FrameLayout {
 
     //    private val flipDistance: Int = ViewConfiguration.get(context).scaledTouchSlop
-//    private val simpleDateFormat = SimpleDateFormat("yyyy年MM月", Locale.getDefault())
     private lateinit var listView: RecyclerView
     private val mDataList = ArrayList<CalendarBean>()
     private lateinit var mAdapter: BaseRecyclerAdapter<CalendarBean>
@@ -26,7 +27,7 @@ open class CustomCalendarView : FrameLayout {
     // 当前显示月份，这个值是当前页面展示中的月份
     private lateinit var mCurrentMonth: CalendarBean
 
-    // 软件打开的当天，这个值赋值后不会改变
+    // 软件使用时的日期，这个值通常在赋值后不会改变(0点过后会手动刷新一下)
     private lateinit var mCurrentDay: CalendarBean
 
     constructor(context: Context) : super(context) {
@@ -43,17 +44,20 @@ open class CustomCalendarView : FrameLayout {
     }
 
     private fun init(context: Context) {
+        initCurrentDay()
+        val view = LayoutInflater.from(context).inflate(R.layout.view_calendar, this)
+        listView = view.findViewById(R.id.list_date)
+        initAdapter()
+        listView.layoutManager = GridLayoutManager(context, 7)
+        listView.adapter = mAdapter
+    }
+
+    private fun initCurrentDay() {
         // 初始化当天日期
         val instanceToday = Calendar.getInstance()
         val day = instanceToday.get(Calendar.DAY_OF_MONTH).toString()
         val dayOfWeek = getWeekString(instanceToday.get(Calendar.DAY_OF_WEEK))
         mCurrentDay = CalendarBean(0, dayOfWeek, day, instanceToday.time)
-        val view = LayoutInflater.from(context).inflate(R.layout.view_calendar, this)
-        listView = view.findViewById(R.id.list_date)
-        initAdapter()
-        initData(null)
-        listView.layoutManager = GridLayoutManager(context, 7)
-        listView.adapter = mAdapter
     }
 
     private fun initAdapter() {
@@ -77,7 +81,31 @@ open class CustomCalendarView : FrameLayout {
                     if (isdImageView.visibility != VISIBLE) {
                         isdImageView.visibility = VISIBLE
                     }
-                    // 判断选中的日期
+                    // 显示当日总支出和总收入
+                    var amount0 = ""
+                    var amount1 = ""
+                    val list = itemVO.dailyAmount
+                    list?.forEach {
+                        it?.let {
+                            if (it.sort == 0) {
+                                amount0 += "-"
+                                amount0 += it.amount.toInt()
+                            } else {
+                                amount1 += "+"
+                                amount1 += it.amount.toInt()
+                            }
+                        }
+                    }
+                    var amount = ""
+                    if (!TextUtils.isEmpty(amount1)) {
+                        amount += amount1
+                        if (!TextUtils.isEmpty(amount0)) {
+                            amount += "\n"
+                        }
+                    }
+                    amount += amount0
+                    isdTextView2.text = amount
+                    // 判断选中的日期，更该选中UI背景
                     val itemVOString: String = simpleDateFormat.format(itemVO.date)
                     val mSelectedItemString: String = simpleDateFormat.format(mSelectedItem?.date ?: "")
                     if (itemVOString == mSelectedItemString) {
@@ -91,6 +119,7 @@ open class CustomCalendarView : FrameLayout {
                     }
                 } else {
                     // 其他月份
+                    isdTextView2.text = ""
                     isdTextView.setTextColor(ContextCompat.getColor(context, R.color.color_bababa))
                     isdTextView.setBackgroundResource(R.color.white)
                     viewHolder.getRootView().setBackgroundResource(android.R.color.transparent)
@@ -139,10 +168,8 @@ open class CustomCalendarView : FrameLayout {
 
     /** 显示上一个月（以基准月为起点） */
     fun goLastMonth() {
-//        val lastMonth: String = simpleDateFormat.format(mCurrentMonthCalendar.date)
         val lastMonth = mCurrentMonth
         val instance: Calendar = Calendar.getInstance()
-//        instance.clear()
         instance.time = mCurrentMonth.date
         instance.add(Calendar.MONTH, -1)
         val tempBean = CalendarBean()
@@ -163,17 +190,39 @@ open class CustomCalendarView : FrameLayout {
         listener?.onMonthChanger(lastMonth, tempBean)
     }
 
-    /** 加载打开软件的当月数据 */
-    fun goThisMonth() {
-        mAdapter.setSelectedItem(mCurrentDay)
-        initData(mCurrentDay)
-        listener?.onMonthChanger(mCurrentMonth, mCurrentDay)
+    /** 日历加载软件使用者当天的数据 */
+    @SuppressLint("NotifyDataSetChanged")
+    fun goToday() {
+        // 之所以在这里再次初始化mCurrentDay，是为了让0点后点击能更新日期
+        initCurrentDay()
+        // 如果日历已经停留在当天的月份，就不需要去重新构建日历数据和订阅了
+        val sdf = SimpleDateFormat("yyyy-MM", Locale.getDefault())
+        val s1: String = sdf.format(mCurrentDay.date) // 当天的日期
+        val s2: String = sdf.format(mCurrentMonth.date) // 日历当前显示的月份
+        if (s1 != s2) { // 判断当天的月份是否和日历所在月份相同
+            initData(mCurrentDay) // 重新加载日历数据
+            listener?.onMonthChanger(mCurrentMonth, mCurrentDay)
+            mAdapter.setSelectedItem(mCurrentDay)
+        } else { // 如果日历已经停留在当天的月份，只需要关注是否需要更新选中的UI
+            val s11: String = simpleDateFormat.format(mCurrentDay.date) // 当天的日期
+            val s22: String = simpleDateFormat.format(mAdapter.getSelectedItem()?.date ?: mCurrentDay.date) // 选中的日期
+            if (s11 != s22) { // 判断选中的日期是为当天
+                mAdapter.setSelectedItem(mCurrentDay)
+                mAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
-    fun goSelectedMonth() {
+    fun goSelectedDay() {
         val item = mAdapter.getSelectedItem()
-        initData(item)
-        listener?.onMonthChanger(mCurrentMonth, item!!)
+        // 如果日历已经停留在选中天的月份，就不需要去重新构建日历数据和订阅了
+        val sdf = SimpleDateFormat("yyyy-MM", Locale.getDefault())
+        val s1: String = sdf.format(item!!.date) // 选中的日期
+        val s2: String = sdf.format(mCurrentMonth.date) // 日历当前显示的月份
+        if (s1 != s2) { // 判断选中天的月份是否和日历所在月份相同
+            initData(item) // 重新加载日历数据
+            listener?.onMonthChanger(mCurrentMonth, item)
+        }
     }
 
     /**
@@ -181,7 +230,8 @@ open class CustomCalendarView : FrameLayout {
      * 最终拼接好需要展示的天会存放到mDataList中，并通过adapter通知list更新
      * @param indexDateBean 存储指定的current Date
      */
-    private fun initData(indexDateBean: CalendarBean?) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun initData(indexDateBean: CalendarBean?) {
         mDataList.clear()
         val instance: Calendar = Calendar.getInstance()
         if (indexDateBean != null) {
@@ -207,10 +257,31 @@ open class CustomCalendarView : FrameLayout {
         val calendarBeanList = processDay(mDataList) // 拼接上月+当前月+下月
         mDataList.clear()
         mDataList.addAll(calendarBeanList)
-//        mDataList.forEach {
-//            Log.d("testCalendar", "$it")
-//        }
         mAdapter.notifyDataSetChanged()
+        // 清空activity的观察list
+        unsubscribeListener?.unsubscribe()
+        // activity去添加观察list
+        subscribeListener?.subscribe(mAdapter, mDataList)
+    }
+
+    private var subscribeListener: OnSubscribeListener? = null
+
+    fun setOnSubscribeListener(subscribeListener: OnSubscribeListener) {
+        this.subscribeListener = subscribeListener
+    }
+
+    interface OnSubscribeListener {
+        fun subscribe(mAdapter: BaseRecyclerAdapter<CalendarBean>, mDataList: ArrayList<CalendarBean>)
+    }
+
+    private var unsubscribeListener: UnsubscribeListener? = null
+
+    fun setUnsubscribeListener(unsubscribeListener: UnsubscribeListener) {
+        this.unsubscribeListener = unsubscribeListener
+    }
+
+    interface UnsubscribeListener {
+        fun unsubscribe()
     }
 
     /**

@@ -1,5 +1,6 @@
 package cloud.runningpig.bearnote.ui.custom
 
+import cloud.runningpig.bearnote.logic.model.DailyAmount
 import java.util.*
 
 data class CalendarBean(
@@ -11,4 +12,6 @@ data class CalendarBean(
     var day: String = "",
     // 实际日期
     var date: Date = Date()
-)
+) {
+    var dailyAmount: List<DailyAmount?>? = null
+}

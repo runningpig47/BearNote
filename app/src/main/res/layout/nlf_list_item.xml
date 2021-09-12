@@ -19,12 +19,12 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/oval_solid_ff5722">
+            android:background="@drawable/oval_solid_f5f5f5">
 
             <ImageView
                 android:id="@+id/nli_imageView1"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 tools:src="@drawable/ic1" />
         </FrameLayout>
