@@ -22,10 +22,10 @@
         android:layout_width="14dp"
         android:layout_height="14dp"
         android:layout_marginTop="4dp"
+        android:src="@drawable/ic_note"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_note" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <cloud.runningpig.bearnote.ui.custom.NTextView
         android:id="@+id/isd_textView2"

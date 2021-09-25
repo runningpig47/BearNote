@@ -13,14 +13,22 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.RecyclerView
 import cloud.runningpig.bearnote.BearNoteApplication
+import cloud.runningpig.bearnote.BearNoteRepository
 import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.SpendingFragmentBinding
+import cloud.runningpig.bearnote.logic.dao.BearNoteDatabase
+import cloud.runningpig.bearnote.logic.model.IconMap
 import cloud.runningpig.bearnote.logic.model.NoteCategory
 import cloud.runningpig.bearnote.logic.utils.Injector
 import cloud.runningpig.bearnote.logic.utils.LogUtil
 import cloud.runningpig.bearnote.logic.utils.ViewUtil
+import cloud.runningpig.bearnote.ui.assets.AFList1Adapter
+import cloud.runningpig.bearnote.ui.assets.SADialogFragment
 import cloud.runningpig.bearnote.ui.custom.InputDialogFragment
+import cloud.runningpig.bearnote.ui.detail.DetailViewModel
+import cloud.runningpig.bearnote.ui.detail.DetailViewModelFactory
 import cloud.runningpig.bearnote.ui.note.category.CategoryActivity
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
@@ -33,18 +41,30 @@ private const val ARG_PARAM1 = "sort"
  * 支出&收入共用
  */
 class SpendingFragment : Fragment(), View.OnClickListener {
-    private var param1: Int? = null
+    private var sort: Int? = null
 
     private val viewModel: SpendingViewModel by activityViewModels {
         Injector.providerSpendingViewModelFactory(requireContext())
     }
+
+    val viewModel2: DetailViewModel by activityViewModels {
+        val repository = BearNoteRepository.getInstance(
+            BearNoteDatabase.getDatabase(BearNoteApplication.context).noteCategoryDao(),
+            BearNoteDatabase.getDatabase(BearNoteApplication.context).noteDao()
+        )
+        DetailViewModelFactory(repository)
+    }
+
     private var _binding: SpendingFragmentBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getInt(ARG_PARAM1, 0)
+            sort = it.getInt(ARG_PARAM1, 0)
+        }
+        viewModel2.loadAccount().observe(this) {
+            viewModel2.accountList = it
         }
     }
 
@@ -60,17 +80,17 @@ class SpendingFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         val adapter = ItemList1Adapter { position, item ->
             if (position != -1) {
-                viewModel.item = item
+                viewModel.categoryItem = item
                 recyclerViewUp()
                 binding.spendingRecyclerView.scrollToPosition(position)
             } else {
                 val intent = Intent(context, CategoryActivity::class.java)
-                intent.putExtra("page", param1)
+                intent.putExtra("page", sort)
                 context?.startActivity(intent)
             }
         }
         binding.spendingRecyclerView.adapter = adapter
-        viewModel.loadBySort(param1 ?: 0).observe(this.viewLifecycleOwner) {
+        viewModel.loadBySort(sort ?: 0).observe(this.viewLifecycleOwner) {
             val list = LinkedList(it)
             val setting = NoteCategory(// 添加末尾固定的设置按钮
                 name = "设置",
@@ -78,8 +98,6 @@ class SpendingFragment : Fragment(), View.OnClickListener {
                 sort = 0,
                 order = Int.MAX_VALUE,
                 uid = 0,
-                recorded = false,
-                isUpload = 1
             )
             list.add(setting)
             adapter.submitList(list)
@@ -141,6 +159,7 @@ class SpendingFragment : Fragment(), View.OnClickListener {
         binding.view11.textView12.setOnClickListener(this) // .
         binding.view11.textView13.setOnClickListener(this) // 完成
         binding.view11.dateLayout.setOnClickListener(this) // dateLayout
+        binding.view11.view12.inputImageView.setOnClickListener(this) // 选择账户
 
         initCustomTimePicker()
     }
@@ -244,21 +263,52 @@ class SpendingFragment : Fragment(), View.OnClickListener {
                 // TODO 验证数据有效性
                 LogUtil.d(
                     "test083101",
-                    "${viewModel.item?.id}, ${viewModel.amount.value}, ${viewModel.date}, ${viewModel.note.value}"
+                    "${viewModel.categoryItem?.id}, ${viewModel.amount.value}, ${viewModel.date}, ${viewModel.note.value}"
                 )
 //                noteCategoryId: Int, amount: Double, date: Date, information: String, accountId: Int
-                val noteCategoryId = viewModel.item?.id ?: -1
+                val noteCategoryId = viewModel.categoryItem?.id ?: -1
                 val amountDouble = amount.toDouble()
                 val date = viewModel.date
                 val information = viewModel.note.value
-                val accountId = 0 // TODO
+                val accountId = viewModel.accountItem?.id ?: -1
                 if (viewModel.isNoteEntryValid(noteCategoryId, amountDouble, date, accountId)) {
+                    // 记账：1.更新账户记录 2.写入记账明细记录
+                    viewModel.accountItem?.let {
+                        var balance = it.balance
+                        if (sort == 0) {
+                            balance -= amountDouble
+                        } else {
+                            balance += amountDouble
+                        }
+                        it.balance = balance
+                        viewModel2.updateList2(listOf(it))
+                    }
                     viewModel.addNewNote(noteCategoryId, amountDouble, date, information, accountId)
                     activity?.finish()
                 }
             }
             R.id.dateLayout -> {
                 pvCustomTime1?.show()
+            }
+            R.id.input_imageView -> { // 选择账户
+                val saDialogFragment = SADialogFragment()
+                saDialogFragment.setOnBindViewListener(object : SADialogFragment.OnBindViewListener {
+                    override fun bindView(view: View) {
+                        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+                        val adapter = AFList1Adapter { item, _ ->
+                            binding.view11.view12.inputImageView.setImageResource(IconMap.map2[item.icon] ?: R.drawable.ic_error)
+                            viewModel.accountItem = item
+                            saDialogFragment.dismiss()
+                        }
+                        recyclerView.adapter = adapter
+                        adapter.submitList(null)
+                        adapter.submitList(viewModel2.accountList)
+                    }
+                })
+                val manager = childFragmentManager
+                val transaction = manager.beginTransaction()
+                transaction.add(saDialogFragment, "")
+                transaction.commitAllowingStateLoss()
             }
             else -> {
             }

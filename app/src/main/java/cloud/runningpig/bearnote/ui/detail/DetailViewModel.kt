@@ -8,15 +8,19 @@ import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
+import cloud.runningpig.bearnote.BearNoteApplication
 import cloud.runningpig.bearnote.BearNoteRepository
-import cloud.runningpig.bearnote.logic.model.ChartMonthBean
-import cloud.runningpig.bearnote.logic.model.DailyAmount
-import cloud.runningpig.bearnote.logic.model.NoteDetail
+import cloud.runningpig.bearnote.logic.model.*
 import com.github.mikephil.charting.utils.ColorTemplate
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ * 明细、图表、账户共用
+ */
 class DetailViewModel(private val bearNoteRepository: BearNoteRepository) : ViewModel() {
+
     val date = MutableLiveData(Date())
 
     val queryByDate: LiveData<List<NoteDetail>> = Transformations.switchMap(date) {
@@ -115,6 +119,81 @@ class DetailViewModel(private val bearNoteRepository: BearNoteRepository) : View
     fun generateDescriptionText(sort: Int): String {
         val sortString = if (sort == 0) "支出" else "收入"
         return "${sortString}类别排行"
+    }
+
+    /**
+     * 以下为账户模块代码
+     */
+
+    // TODO 验证输入信息
+    fun accountEntryValid(name: String, icon: String, balance: Double, information: String, order: Int): Boolean {
+        return true
+    }
+
+    private fun getNewAccount(name: String, icon: String, balance: Double, information: String, order: Int): Account {
+        return Account(
+            name = name,
+            icon = icon,
+            balance = balance,
+            information = information,
+            order = order,
+            uid = BearNoteApplication.uid,
+        )
+    }
+
+    private fun insert(account: Account) = viewModelScope.launch {
+        bearNoteRepository.insert(account)
+    }
+
+    fun addNewAccount(name: String, icon: String, balance: Double, information: String, order: Int) {
+        val account = getNewAccount(name, icon, balance, information, order)
+        insert(account)
+    }
+
+    fun queryMaxOrder2() = bearNoteRepository.queryMaxOrder2().asLiveData()
+
+    var accountList: List<Account> = ArrayList()
+    fun loadAccount() = bearNoteRepository.loadAccount().asLiveData()
+
+    fun updateList2(list: List<Account>) = viewModelScope.launch {
+        bearNoteRepository.updateList2(list)
+    }
+
+    // 转账
+    var from: Account? = null // todo 点击完成后设置为null
+    var to: Account? = null
+    var mDate = Date()
+
+    // TODO 检查转账输入信息是否有效
+    fun transferEntryValid(fromId: Int?, toId: Int?, amount: Double?, info: String?, date: Date?): Boolean {
+        return true
+    }
+
+    private fun insertTransfer(transfer: Transfer) = viewModelScope.launch {
+        bearNoteRepository.insertTransfer(transfer)
+    }
+
+    private fun newTransfer(fromId: Int, toId: Int, amount: Double, info: String, date: Date): Transfer {
+        return Transfer(
+            fromId = fromId,
+            toId = toId,
+            amount = amount,
+            information = info,
+            date = date
+        )
+    }
+
+    fun addNewTransfer(fromId: Int, toId: Int, amount: Double, info: String, date: Date) {
+        val t = newTransfer(fromId, toId, amount, info, date)
+        insertTransfer(t)
+    }
+
+    val month2 = MutableLiveData(Date()) // TODO 改月份
+
+    fun queryByMonth2(accountId: Int): LiveData<List<TransferDetail>> = Transformations.switchMap(month2) {
+        val startOfMonth = getStartOfMonth(it)
+        val endOfMonth = getEndOfMonth(it)
+        bearNoteRepository.queryByDate2(accountId, startOfMonth, endOfMonth).asLiveData()
     }
 
 }

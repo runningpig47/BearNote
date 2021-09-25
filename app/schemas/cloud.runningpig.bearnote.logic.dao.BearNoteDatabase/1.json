@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6854dd9ad2b5a388fa758c6870f0b30b",
+    "identityHash": "ceb956991d792b07ce92a197193031e3",
     "entities": [
       {
         "tableName": "note_category",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `icon` TEXT NOT NULL, `sort` INTEGER NOT NULL, `order` INTEGER NOT NULL, `uid` INTEGER NOT NULL, `recorded` INTEGER NOT NULL, `is_upload` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `icon` TEXT NOT NULL, `sort` INTEGER NOT NULL, `order` INTEGER NOT NULL, `uid` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -43,18 +43,6 @@
             "columnName": "uid",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "recorded",
-            "columnName": "recorded",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "isUpload",
-            "columnName": "is_upload",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
@@ -68,7 +56,7 @@
       },
       {
         "tableName": "note",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `note_category_id` INTEGER NOT NULL, `amount` REAL NOT NULL, `date` INTEGER NOT NULL, `information` TEXT, `uid` INTEGER NOT NULL, `account_id` INTEGER NOT NULL, `is_upload` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `note_category_id` INTEGER NOT NULL, `amount` REAL NOT NULL, `date` INTEGER NOT NULL, `information` TEXT, `account_id` INTEGER NOT NULL, `uid` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -101,20 +89,126 @@
             "notNull": false
           },
           {
-            "fieldPath": "uid",
-            "columnName": "uid",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "accountId",
             "columnName": "account_id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "isUpload",
-            "columnName": "is_upload",
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "account",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `icon` TEXT NOT NULL, `balance` REAL NOT NULL, `information` TEXT NOT NULL, `order` INTEGER NOT NULL, `uid` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balance",
+            "columnName": "balance",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "information",
+            "columnName": "information",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "order",
+            "columnName": "order",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "transfer",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `from_id` INTEGER NOT NULL, `to_id` INTEGER NOT NULL, `amount` REAL NOT NULL, `information` TEXT, `date` INTEGER NOT NULL, `uid` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fromId",
+            "columnName": "from_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "toId",
+            "columnName": "to_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "information",
+            "columnName": "information",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "uid",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -129,10 +223,19 @@
         "foreignKeys": []
       }
     ],
-    "views": [],
+    "views": [
+      {
+        "viewName": "note_detail",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT note.id AS noteId, note.amount as noteAmount, note.date as noteDate, note.information as information, note.account_id as accountId, account.name as accountName, note.uid as uid, note.note_category_id AS categoryId, note_category.sort AS categorySort, note_category.icon AS categoryIcon, note_category.name AS categoryName FROM note INNER JOIN note_category ON note.note_category_id = note_category.id LEFT JOIN account ON note.account_id = account.id"
+      },
+      {
+        "viewName": "transfer_detail",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT noteId, categoryIcon, categoryName, categorySort, noteAmount, accountId, accountName, noteDate, information, 0 as detailSort, '' as fromId, '' as toId, '' as fromName, '' as toName FROM note_detail WHERE accountId != -1 UNION SELECT transfer.id, '', '', '', transfer.amount, '', '', transfer.date, transfer.information, 1 as detailSort, transfer.from_id, transfer.to_id, a1.name, a2.name FROM transfer INNER JOIN account a1, account a2 ON from_id = a1.id AND to_id = a2.id ORDER BY noteDate"
+      }
+    ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6854dd9ad2b5a388fa758c6870f0b30b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ceb956991d792b07ce92a197193031e3')"
     ]
   }
 }

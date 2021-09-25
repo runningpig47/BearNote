@@ -23,7 +23,6 @@ data class Note(
     var amount: Double,
     var date: Date,
     var information: String?,
-    var uid: Int,
     @ColumnInfo(name = "account_id") var accountId: Int,
-    @ColumnInfo(name = "is_upload") var isUpload: Int
+    var uid: Int,
 )

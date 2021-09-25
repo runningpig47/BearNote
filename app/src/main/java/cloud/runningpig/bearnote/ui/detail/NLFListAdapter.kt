@@ -48,6 +48,12 @@ class NLFListAdapter(private val onItemClick: (position: Int, noteDetail: NoteDe
                 } else {
                     nliTextView3.visibility = View.GONE
                 }
+                if (item.accountId != -1) { // 显示支出明细的账户名
+                    nliTextView4.visibility = View.VISIBLE
+                    nliTextView4.text = item.accountName
+                } else {
+                    nliTextView4.visibility = View.GONE
+                }
             }
         }
 

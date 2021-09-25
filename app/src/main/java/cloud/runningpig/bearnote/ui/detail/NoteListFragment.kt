@@ -50,7 +50,6 @@ class NoteListFragment : Fragment() {
             intent.putExtra("noteDetail", noteDetail)
             startActivity(intent)
         }
-        binding.fnlRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.fnlRecyclerView.adapter = adapter
         return binding.root
     }

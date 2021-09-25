@@ -3,24 +3,17 @@ package cloud.runningpig.bearnote.ui.note.category
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.ActivityCategoryListBinding
-import cloud.runningpig.bearnote.logic.utils.Injector
-import cloud.runningpig.bearnote.ui.note.SpendingViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 class CategoryActivity : AppCompatActivity() {
 
     private var currentPage: Int = 0
-
-    private val viewModel: SpendingViewModel by viewModels {
-        Injector.providerSpendingViewModelFactory(this)
-    }
 
     private lateinit var binding: ActivityCategoryListBinding
 

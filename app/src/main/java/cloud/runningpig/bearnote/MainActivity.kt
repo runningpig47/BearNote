@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentAdapter = FragmentAdapter(supportFragmentManager, lifecycle, fragments)
         binding.viewPager2.adapter = fragmentAdapter
         binding.viewPager2.isUserInputEnabled = false
+//        binding.viewPager2.offscreenPageLimit = 3
     }
 
     private fun initEvent() {

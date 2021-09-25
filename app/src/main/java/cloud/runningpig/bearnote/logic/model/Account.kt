@@ -3,6 +3,7 @@ package cloud.runningpig.bearnote.logic.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 /**
  * 账户表
@@ -13,6 +14,7 @@ import androidx.room.PrimaryKey
  * @param uid 用户id 用户id TODO 外键：用户表主键id
  * @param recorded 是否存在该账户的记账数据
  * @param balance 账户余额
+ * @param information 备注
  * @param isUpload 是否已上传到服务器
  */
 @Entity(tableName = "account")
@@ -20,9 +22,8 @@ data class Account(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
     var name: String,
     var icon: String,
+    var balance: Double,
+    var information: String,
     var order: Int,
     var uid: Int,
-    var recorded: Boolean,
-    var balance: Double,
-    @ColumnInfo(name = "is_upload") var isUpload: Int
-)
+): Serializable

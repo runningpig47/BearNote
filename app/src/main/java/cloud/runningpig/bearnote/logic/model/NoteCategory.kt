@@ -12,8 +12,6 @@ import androidx.room.PrimaryKey
  * @param sort 类别分类：0代表支出，1代表收入
  * @param order 类别在分类中的顺序
  * @param uid 用户id 用户id TODO 外键：用户表主键id
- * @param recorded 是否存在该类别的记账数据
- * @param isUpload 是否已上传到服务器
  */
 @Entity(tableName = "note_category")
 data class NoteCategory(
@@ -23,6 +21,4 @@ data class NoteCategory(
     var sort: Int,
     var order: Int,
     var uid: Int,
-    var recorded: Boolean,
-    @ColumnInfo(name = "is_upload") var isUpload: Int
 )

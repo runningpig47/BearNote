@@ -8,16 +8,11 @@ import java.util.*
 /**
  * 用户表
  * @param id 用户id
- * @param nickname 昵称
- * @param gender 性别
- * @param registrationDate 注册日期
- * @param password 密码
+ * @param userName 昵称
  */
 @Entity(tableName = "user")
 class User(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
-    @ColumnInfo(name = "nick_name") var nickname: String,
-    var sex: Boolean,
-    @ColumnInfo(name = "registration_date") var registrationDate: Date,
-    var password: String,
+    @ColumnInfo(name = "user_name") var userName: String,
+    // 服务器设置password字段
 )

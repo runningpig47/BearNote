@@ -11,6 +11,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BearNote">
         <activity
+            android:name=".ui.assets.EditAccountActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.assets.TransferActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.assets.AddAssetActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.assets.SelectIconActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.detail.EditNoteActivity"
             android:exported="true" />
         <activity

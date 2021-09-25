@@ -6,12 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import cloud.runningpig.bearnote.logic.model.Converters
-import cloud.runningpig.bearnote.logic.model.Note
-import cloud.runningpig.bearnote.logic.model.NoteCategory
-import cloud.runningpig.bearnote.logic.model.NoteDetail
+import cloud.runningpig.bearnote.logic.model.*
 
-@Database(entities = [NoteCategory::class, Note::class], views = [NoteDetail::class], version = 1)
+@Database(
+    entities = [NoteCategory::class, Note::class, Account::class, Transfer::class],
+    views = [NoteDetail::class, TransferDetail::class], version = 1
+)
 @TypeConverters(Converters::class)
 abstract class BearNoteDatabase : RoomDatabase() {
 

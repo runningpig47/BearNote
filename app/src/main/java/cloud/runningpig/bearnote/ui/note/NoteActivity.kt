@@ -26,12 +26,11 @@ class NoteActivity : AppCompatActivity() {
         binding = ActivityNoteBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
         binding.noteViewPager2.adapter = object : FragmentStateAdapter(this) {
-            override fun getItemCount(): Int = 3
+            override fun getItemCount(): Int = 2
 
             override fun createFragment(position: Int): Fragment = when (position) {
                 0 -> SpendingFragment.newInstance(0)
-                1 -> SpendingFragment.newInstance(1)
-                else -> TransferFragment()
+                else -> SpendingFragment.newInstance(1)
             }
         }
         binding.noteViewPager2.registerOnPageChangeCallback(object :
@@ -42,12 +41,11 @@ class NoteActivity : AppCompatActivity() {
                 viewModel.page.value = position
             }
         })
-        binding.noteViewPager2.offscreenPageLimit = 2
+        binding.noteViewPager2.offscreenPageLimit = 1
         TabLayoutMediator(binding.noteTabLayout, binding.noteViewPager2) { tab, position ->
             when (position) {
                 0 -> tab.text = getString(R.string.spending)
-                1 -> tab.text = getString(R.string.income)
-                else -> tab.text = getString(R.string.transfer)
+                else -> tab.text = getString(R.string.income)
             }
         }.attach()
     }

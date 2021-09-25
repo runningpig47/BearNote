@@ -26,6 +26,7 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_gravity="center"
+                tools:ignore="ContentDescription"
                 tools:src="@drawable/ic1" />
         </FrameLayout>
 
@@ -36,48 +37,69 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_toEndOf="@id/nli_frameLayout1"
-            android:orientation="vertical">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/nli_textView1"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     tools:text="办公办公" />
 
+                <TextView
+                    android:id="@+id/nli_textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#777777"
+                    android:textSize="12sp"
+                    tools:text="备注:小刘要我买的小刘要我买的小刘要我买的小刘要我买的" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="end"
+                android:orientation="vertical">
+
                 <cloud.runningpig.bearnote.ui.custom.NTextView
                     android:id="@+id/nli_textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textColor="#555555"
+                    android:textColor="#222222"
                     android:textSize="14sp"
                     tools:text="+5000.25" />
+
+                <TextView
+                    android:id="@+id/nli_textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#777777"
+                    android:textSize="12sp"
+                    tools:text="微信钱包" />
+
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/nli_textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="#777777"
-                android:textSize="12sp"
-                tools:text="备注:小刘要我买的小刘要我买的小刘要我买的小刘要我买的" />
         </LinearLayout>
 
         <View

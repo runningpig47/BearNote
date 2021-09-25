@@ -21,6 +21,8 @@ private const val ARG_PARAM1 = "sort"
 
 class CategoryListFragment : Fragment() {
 
+    private var _binding: FragmentCategoryListBinding? = null
+    private val binding get() = _binding!!
     private var param1: Int? = null
     private var noteCategoryList: LinkedList<NoteCategory> = LinkedList()
     private var deleteList: ArrayList<NoteCategory> = ArrayList()
@@ -28,9 +30,6 @@ class CategoryListFragment : Fragment() {
     private val viewModel: SpendingViewModel by activityViewModels {
         Injector.providerSpendingViewModelFactory(requireContext())
     }
-
-    private var _binding: FragmentCategoryListBinding? = null
-    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,9 +70,7 @@ class CategoryListFragment : Fragment() {
             }
         })
         binding.fclRecyclerView.adapter = adapter
-        binding.fclRecyclerView.layoutManager = LinearLayoutManager(context)
         viewModel.loadBySort(param1 ?: 0).observe(this.viewLifecycleOwner) {
-            LogUtil.d("test", "新的通知")
             noteCategoryList = LinkedList(it)
             adapter.submitList(noteCategoryList)
         }
@@ -83,7 +80,7 @@ class CategoryListFragment : Fragment() {
 
     /**
      * 在onPause()方法中将所有对List的操作写入数据库，包括item顺序的调整和删除
-     * 保证在进入其他页面前，修改写入到数据库中。TODO 性能问题
+     * 保证在进入其他页面前，修改写入到数据库中。TODO 性能问题，每次onPause都写回？即便没改
      */
     override fun onPause() {
         super.onPause()

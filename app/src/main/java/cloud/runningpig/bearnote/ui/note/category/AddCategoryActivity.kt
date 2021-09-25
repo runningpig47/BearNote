@@ -57,7 +57,7 @@ class AddCategoryActivity : AppCompatActivity() {
         binding.aacRecyclerView.adapter = adapter
         adapter.submitList(list)
         viewModel.queryMaxOrder(sort).observe(this) {
-            order = it ?: 0
+            order = if (it == null) 0 else it + 1
             titleTextView2.visibility = View.VISIBLE
             titleTextView2.setOnClickListener {
                 addNewItem()

@@ -49,9 +49,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
-                android:ems="4"
                 android:hint="输入类别名称（不超过四个汉字）"
-                android:inputType="textPersonName"
+                android:inputType="text"
                 android:maxLength="4"
                 android:textSize="14sp" />
         </LinearLayout>

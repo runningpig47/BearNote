@@ -5,6 +5,7 @@ import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -78,9 +79,6 @@ open class CustomCalendarView : FrameLayout {
                     if (isdTextView2.visibility != VISIBLE) {
                         isdTextView2.visibility = VISIBLE
                     }
-                    if (isdImageView.visibility != VISIBLE) {
-                        isdImageView.visibility = VISIBLE
-                    }
                     // 显示当日总支出和总收入
                     var amount0 = ""
                     var amount1 = ""
@@ -116,6 +114,13 @@ open class CustomCalendarView : FrameLayout {
                         isdTextView.setTextColor(ContextCompat.getColor(context, R.color.color_4f4f4f))
                         isdTextView.setBackgroundResource(android.R.color.transparent)
                         viewHolder.getRootView().setBackgroundResource(android.R.color.transparent)
+                    }
+
+                    // TODO 模拟的备忘position
+                    if (position == 10 || position == 15 || position == 24 || position == 4 || position == 18 || position == 19) {
+                        isdImageView.visibility = View.VISIBLE
+                    } else {
+                        isdImageView.visibility = View.INVISIBLE
                     }
                 } else {
                     // 其他月份

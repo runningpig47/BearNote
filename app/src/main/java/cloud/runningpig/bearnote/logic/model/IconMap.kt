@@ -48,4 +48,15 @@ object IconMap {
         "setting" to R.drawable.ic_setting,
     )
 
+    val map2 = mutableMapOf(
+        "ic100" to R.drawable.ic_account_xj,
+        "ic101" to R.drawable.ic_account_zfb,
+        "ic102" to R.drawable.ic_account_wx,
+        "ic103" to R.drawable.ic_account_cxk,
+        "ic104" to R.drawable.ic_account_xyk,
+        "ic105" to R.drawable.ic_account_gjk,
+        "ic106" to R.drawable.ic_account_fk,
+        "ic107" to R.drawable.ic_account_qt
+    )
+
 }
