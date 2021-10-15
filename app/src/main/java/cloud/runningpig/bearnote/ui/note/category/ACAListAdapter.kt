@@ -13,13 +13,12 @@ import cloud.runningpig.bearnote.logic.model.IconMap
 
 class ACAListAdapter(private val onItemClick: (position: Int) -> Unit) :
     ListAdapter<Icon, ACAListAdapter.ViewHolder>(ItemComparator()) {
-    private var mSelectedPosition: Int = 0
 
-    fun setSelectedPosition(p: Int) {
-        mSelectedPosition = p
+    private var mSelectedIconName: String = "ic1"
+
+    fun setSelectedIconName(iconName: String) {
+        mSelectedIconName = iconName
     }
-
-    fun getSelectedPosition() = mSelectedPosition
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.create(parent)
@@ -30,19 +29,18 @@ class ACAListAdapter(private val onItemClick: (position: Int) -> Unit) :
         val icon = getItem(position)
         holder.itemView.setOnClickListener {
             onItemClick(position)
-            mSelectedPosition = holder.bindingAdapterPosition
+            mSelectedIconName = icon.iconName
             notifyDataSetChanged()
         }
-        holder.bind(icon, position, mSelectedPosition)
+        holder.bind(icon,mSelectedIconName)
     }
 
-    class ViewHolder(private var binding: AcaListItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private var binding: AcaListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(icon: Icon, p1: Int, p2: Int) {
+        fun bind(icon: Icon, mSelectedIconName: String) {
             binding.apply {
                 acaListImageView.setImageResource(IconMap.map[icon.iconName] ?: R.drawable.ic_error)
-                if (p1 == p2) {
+                if (icon.iconName == mSelectedIconName) {
                     acaListImageView.setBackgroundResource(R.drawable.oval_solid_ff5722)
                 } else {
                     acaListImageView.setBackgroundResource(R.drawable.oval_solid_f5f5f5)

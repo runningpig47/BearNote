@@ -24,5 +24,5 @@ data class Note(
     var date: Date,
     var information: String?,
     @ColumnInfo(name = "account_id") var accountId: Int,
-    var uid: Int,
+    var uid: Int
 )

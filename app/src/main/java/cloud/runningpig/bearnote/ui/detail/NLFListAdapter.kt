@@ -70,15 +70,7 @@ class NLFListAdapter(private val onItemClick: (position: Int, noteDetail: NoteDe
         }
 
         override fun areContentsTheSame(oldItem: NoteDetail, newItem: NoteDetail): Boolean {
-            return oldItem.noteAmount == newItem.noteAmount
-//            val noteId: Int,
-//            var noteAmount: Double,
-//            var noteDate: Date,
-//            var information: String?,
-//            val uid: Int,
-//            var categorySort: Int,
-//            var categoryIcon: String,
-//            var categoryName: String,
+            return oldItem == newItem
         }
     }
 

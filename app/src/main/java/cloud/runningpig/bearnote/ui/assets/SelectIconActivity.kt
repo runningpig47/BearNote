@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.ActivitySelectIconBinding
 import cloud.runningpig.bearnote.logic.model.Icon
+import cloud.runningpig.bearnote.ui.BaseActivity
 
-class SelectIconActivity : AppCompatActivity() {
+class SelectIconActivity : BaseActivity() {
 
     private var _binding: ActivitySelectIconBinding? = null
     private val binding get() = _binding!!

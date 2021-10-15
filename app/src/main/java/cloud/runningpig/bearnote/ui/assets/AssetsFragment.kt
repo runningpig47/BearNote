@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import cloud.runningpig.bearnote.BearNoteApplication
-import cloud.runningpig.bearnote.BearNoteRepository
 import cloud.runningpig.bearnote.databinding.AssetsFragmentBinding
+import cloud.runningpig.bearnote.logic.BearNoteRepository
 import cloud.runningpig.bearnote.logic.dao.BearNoteDatabase
 import cloud.runningpig.bearnote.logic.model.Account
 import cloud.runningpig.bearnote.ui.detail.DetailViewModel
@@ -37,21 +37,26 @@ class AssetsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = AssetsFragmentBinding.inflate(inflater, container, false)
-        binding.linearLayout2.setOnClickListener {
-            val intent = Intent(activity, SelectIconActivity::class.java)
-            startActivity(intent)
+        binding.apply {
+            linearLayout2.setOnClickListener {
+                val intent = Intent(activity, SelectIconActivity::class.java)
+                startActivity(intent)
+            }
+            afTextView5.setOnClickListener {
+                startActivity(Intent(activity, TransferActivity::class.java))
+            }
+            viewModel.sumBalance().observe(viewLifecycleOwner) {
+                afTextView4.text = it.toString()
+            }
+            return root
         }
-        binding.afTextView5.setOnClickListener {
-            startActivity(Intent(activity, TransferActivity::class.java))
-        }
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = AFList1Adapter { item, _ ->
             val intent = Intent(activity, EditAccountActivity::class.java)
-            intent.putExtra("account", item)
+            intent.putExtra("accountId", item.id)
             startActivity(intent)
         }
         adapter.setListener(object : AFList1Adapter.List1AdapterListener {

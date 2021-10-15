@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import cloud.runningpig.bearnote.BearNoteApplication
-import cloud.runningpig.bearnote.BearNoteRepository
+import cloud.runningpig.bearnote.logic.BearNoteRepository
 import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.FragmentChartBinding
 import cloud.runningpig.bearnote.logic.dao.BearNoteDatabase

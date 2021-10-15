@@ -113,7 +113,7 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <cloud.runningpig.bearnote.ui.custom.NTextView
                         android:id="@+id/eaa_textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <cloud.runningpig.bearnote.ui.custom.NTextView
                         android:id="@+id/eaa_textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2021年9月"
+                android:text="2021年10月"
                 android:textColor="#000000"
                 android:textSize="18sp" />
         </LinearLayout>

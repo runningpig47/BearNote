@@ -37,39 +37,77 @@ class EAAList1Adapter() : ListAdapter<TransferDetail, EAAList1Adapter.ViewHolder
                 if (accountSort == 0) { // 收支明细
                     eaaImageView1.setImageResource(IconMap.map[item.categoryIcon] ?: R.drawable.ic_error)
                     eaaTextView1.text = item.categoryName
+                    eaaTextView4.visibility = View.VISIBLE
                     eaaTextView4.text = item.accountName
                     val sort = item.categorySort
                     val s = if (sort == 0) {
                         "-${item.noteAmount}"
                     } else {
-                        item.noteAmount.toString()
+                        "+${item.noteAmount}"
                     }
                     eaaTextView2.text = s
+                    val info = item.information
+                    if (TextUtils.isEmpty(info)) {
+                        eaaTextView3.visibility = View.GONE
+                    } else {
+                        eaaTextView3.visibility = View.VISIBLE
+                        eaaTextView3.text = "备注：$info"
+                    }
                 } else { // 账户转账
-                    eaaImageView1.setImageResource(R.drawable.ic_transfer)
-                    accountId?.let {
+                    accountId?.let { accountId ->
                         when {
-                            item.fromId == it -> {
-                                eaaTextView1.text = "转出"
-                                eaaTextView2.text = "-${item.noteAmount}"
-                            }
-                            item.toId == it -> {
-                                eaaTextView1.text = "转入"
+                            item.fromId == item.toId -> { // 资金调整
+                                eaaImageView1.setImageResource(R.drawable.ic_reset)
+                                eaaTextView3.visibility = View.VISIBLE
+                                eaaTextView1.text = "余额调整为"
+                                eaaTextView3.text = "余额调整"
+                                eaaTextView4.visibility = View.VISIBLE
+                                eaaTextView4.text = item.information
                                 eaaTextView2.text = item.noteAmount.toString()
                             }
-                            else -> { // TODO 都相等代表账户金额调整
-                                eaaTextView1.text = "账户调整"
+                            item.fromId == accountId -> { // 转出
+                                eaaImageView1.setImageResource(R.drawable.ic_toleft)
+                                eaaTextView1.text = "转出"
+                                eaaTextView2.text = "-${item.noteAmount}"
+                                eaaTextView4.visibility = View.VISIBLE
+                                eaaTextView4.text = item.fromName + ">" + item.toName
+                                if (TextUtils.isEmpty(item.information)) {
+                                    eaaTextView3.visibility = View.GONE
+                                } else {
+                                    eaaTextView3.visibility = View.VISIBLE
+                                    val info = "备注：${item.information}"
+                                    eaaTextView3.text = info
+                                }
+                            }
+                            item.toId == accountId -> { // 转入
+                                eaaImageView1.setImageResource(R.drawable.ic_toright)
+                                eaaTextView1.text = "转入"
+                                eaaTextView2.text = "+${item.noteAmount}"
+                                eaaTextView4.visibility = View.VISIBLE
+                                eaaTextView4.text = item.fromName + ">" + item.toName
+                                if (TextUtils.isEmpty(item.information)) {
+                                    eaaTextView3.visibility = View.GONE
+                                } else {
+                                    eaaTextView3.visibility = View.VISIBLE
+                                    val info = "备注：${item.information}"
+                                    eaaTextView3.text = info
+                                }
+                            }
+                            else -> { // - -晕
+                                eaaImageView1.setImageResource(R.drawable.ic_error)
+                                eaaTextView1.text = "异常转账记录"
+                                eaaTextView2.text = item.noteAmount.toString()
+                                if (TextUtils.isEmpty(item.information)) {
+                                    eaaTextView3.visibility = View.GONE
+                                } else {
+                                    eaaTextView3.visibility = View.VISIBLE
+                                    val info = "备注：${item.information}"
+                                    eaaTextView3.text = info
+                                }
+                                eaaTextView4.visibility = View.GONE
                             }
                         }
                     }
-                    eaaTextView4.text = item.fromName + ">" + item.toName
-                }
-                if (TextUtils.isEmpty(item.information)) {
-                    eaaTextView3.visibility = View.GONE
-                } else {
-                    eaaTextView3.visibility = View.VISIBLE
-                    val info = "备注：${item.information}"
-                    eaaTextView3.text = info
                 }
             }
         }

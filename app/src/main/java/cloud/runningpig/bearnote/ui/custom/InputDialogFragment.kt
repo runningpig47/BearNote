@@ -45,9 +45,9 @@ class InputDialogFragment : DialogFragment() {
 
         val view = inflater.inflate(R.layout.input_edit_layout, container, false)
         val editText = view.findViewById<EditText>(R.id.input_editText)
-        editText.setText(viewModel.note.value)
+        editText.setText(viewModel.info.value)
         editText.addTextChangedListener {
-            viewModel.note.value = it.toString()
+            viewModel.info.value = it.toString()
         }
         listener?.bindView(view)
         return view

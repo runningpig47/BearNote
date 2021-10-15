@@ -11,7 +11,7 @@ import java.util.*
             "note_category.sort AS categorySort, note_category.icon AS categoryIcon, note_category.name AS categoryName " +
             "FROM note INNER JOIN note_category ON note.note_category_id = note_category.id LEFT JOIN account ON note.account_id = account.id"
 )
-class NoteDetail(
+data class NoteDetail(
     var noteId: Int,
     var noteAmount: Double,
     var noteDate: Date,

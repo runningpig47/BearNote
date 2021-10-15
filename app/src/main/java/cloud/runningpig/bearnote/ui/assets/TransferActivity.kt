@@ -4,26 +4,25 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import cloud.runningpig.bearnote.BearNoteApplication
-import cloud.runningpig.bearnote.BearNoteRepository
 import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.ActivityTransferBinding
+import cloud.runningpig.bearnote.logic.BearNoteRepository
 import cloud.runningpig.bearnote.logic.dao.BearNoteDatabase
-import cloud.runningpig.bearnote.logic.model.Account
 import cloud.runningpig.bearnote.logic.model.IconMap
+import cloud.runningpig.bearnote.ui.BaseActivity
 import cloud.runningpig.bearnote.ui.detail.DetailViewModel
 import cloud.runningpig.bearnote.ui.detail.DetailViewModelFactory
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
-class TransferActivity : AppCompatActivity() {
+class TransferActivity : BaseActivity() {
 
     private var _binding: ActivityTransferBinding? = null
     private val binding get() = _binding!!
@@ -41,6 +40,8 @@ class TransferActivity : AppCompatActivity() {
         _binding = ActivityTransferBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
         binding.taTitleLayout.findViewById<TextView>(R.id.title_textView).text = "转账"
+        val format = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
+        binding.taTextView3.text = format.format(viewModel.mDate)
         initCustomTimePicker()
         viewModel.loadAccount().observe(this) {
             viewModel.accountList = it
@@ -49,8 +50,9 @@ class TransferActivity : AppCompatActivity() {
             val saDialogFragment = SADialogFragment()
             saDialogFragment.setOnBindViewListener(object : SADialogFragment.OnBindViewListener {
                 override fun bindView(view: View) {
+                    view.findViewById<TextView>(R.id.sad_textView1).text = "选择转出账户"
                     val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-                    val adapter = AFList1Adapter { item, _ ->
+                    val adapter = SADialogList1Adapter { item, _ ->
                         binding.taImageView1.setImageResource(IconMap.map2[item.icon] ?: R.drawable.ic_error)
                         binding.taTextView1.text = item.name
                         viewModel.from = item
@@ -70,8 +72,9 @@ class TransferActivity : AppCompatActivity() {
             val saDialogFragment = SADialogFragment()
             saDialogFragment.setOnBindViewListener(object : SADialogFragment.OnBindViewListener {
                 override fun bindView(view: View) {
+                    view.findViewById<TextView>(R.id.sad_textView1).text = "选择转入账户"
                     val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-                    val adapter = AFList1Adapter { item, _ ->
+                    val adapter = SADialogList1Adapter { item, _ ->
                         binding.taImageView2.setImageResource(IconMap.map2[item.icon] ?: R.drawable.ic_error)
                         binding.taTextView2.text = item.name
                         viewModel.to = item
@@ -88,10 +91,12 @@ class TransferActivity : AppCompatActivity() {
             transaction.commitAllowingStateLoss()
         }
         binding.linearLayout5.setOnClickListener {
+            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
             pvCustomTime1?.show()
         }
         binding.saveAction.setOnClickListener {
-            if (transferEntryValid()) { // todo 前置检验要保证from和to非空
+            if (transferEntryValid()) { // 前置检验要保证from和to非空
                 // 1. 更新账户表from和to转入转出金额
                 val fromBalance = viewModel.from!!.balance
                 val toBalance = viewModel.to!!.balance
@@ -114,9 +119,7 @@ class TransferActivity : AppCompatActivity() {
         return viewModel.transferEntryValid(
             viewModel.from?.id,
             viewModel.to?.id,
-            binding.taEditText1.text.toString().toDouble(),
-            binding.taEditText2.text.toString(),
-            viewModel.mDate
+            binding.taEditText1.text.toString(),
         )
     }
 

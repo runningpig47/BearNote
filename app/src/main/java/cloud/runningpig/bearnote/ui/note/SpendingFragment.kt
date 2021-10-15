@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,23 +16,27 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import cloud.runningpig.bearnote.BearNoteApplication
-import cloud.runningpig.bearnote.BearNoteRepository
 import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.SpendingFragmentBinding
+import cloud.runningpig.bearnote.logic.BearNoteRepository
 import cloud.runningpig.bearnote.logic.dao.BearNoteDatabase
 import cloud.runningpig.bearnote.logic.model.IconMap
 import cloud.runningpig.bearnote.logic.model.NoteCategory
+import cloud.runningpig.bearnote.logic.model.NoteDetail
 import cloud.runningpig.bearnote.logic.utils.Injector
 import cloud.runningpig.bearnote.logic.utils.LogUtil
 import cloud.runningpig.bearnote.logic.utils.ViewUtil
-import cloud.runningpig.bearnote.ui.assets.AFList1Adapter
+import cloud.runningpig.bearnote.logic.utils.showToast
 import cloud.runningpig.bearnote.ui.assets.SADialogFragment
+import cloud.runningpig.bearnote.ui.assets.SADialogList1Adapter
 import cloud.runningpig.bearnote.ui.custom.InputDialogFragment
 import cloud.runningpig.bearnote.ui.detail.DetailViewModel
 import cloud.runningpig.bearnote.ui.detail.DetailViewModelFactory
 import cloud.runningpig.bearnote.ui.note.category.CategoryActivity
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -68,10 +73,7 @@ class SpendingFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = SpendingFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -80,7 +82,7 @@ class SpendingFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         val adapter = ItemList1Adapter { position, item ->
             if (position != -1) {
-                viewModel.categoryItem = item
+                viewModel.categoryId = item!!.id
                 recyclerViewUp()
                 binding.spendingRecyclerView.scrollToPosition(position)
             } else {
@@ -90,29 +92,76 @@ class SpendingFragment : Fragment(), View.OnClickListener {
             }
         }
         binding.spendingRecyclerView.adapter = adapter
+        if (viewModel.noteId >= 0) { // 修改记账
+            MainScope().launch(Dispatchers.IO) {
+                viewModel2.queryById2(viewModel.noteId).collect { noteDetail: NoteDetail? ->
+                    if (noteDetail != null) {
+                        if (noteDetail.accountId != -1) {
+                            val account = viewModel2.queryByAid3(noteDetail.accountId)
+                            withContext(Dispatchers.Main) {
+                                viewModel.oldAccountItem = account
+                                viewModel.accountItem.value = account
+                            }
+                        }
+                        withContext(Dispatchers.Main) {
+                            if (isAdded) {
+                                recyclerViewUp()
+                            }
+                            viewModel.categoryId = noteDetail.categoryId
+                            if (noteDetail.categorySort == sort) {
+                                adapter.setSelectedItemId(viewModel.categoryId)
+                                adapter.notifyDataSetChanged()
+                            }
+                            viewModel.amount.value = noteDetail.noteAmount.toString()
+                            viewModel.oldAmount = noteDetail.noteAmount.toString()
+                            viewModel.date = noteDetail.noteDate
+                            val format = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
+                            binding.view11.dateTextView.text = format.format(viewModel.date)
+                            binding.view11.dateImageView.visibility = View.GONE
+                            viewModel.info.value = noteDetail.information
+                        }
+                    }
+                }
+            }
+            // 更新过程中记得删除类别后，更新viewmodel中的类别id为-1
+        }
         viewModel.loadBySort(sort ?: 0).observe(this.viewLifecycleOwner) {
             val list = LinkedList(it)
-            val setting = NoteCategory(// 添加末尾固定的设置按钮
+            val setting = NoteCategory(
+                // 添加末尾固定的设置按钮
                 name = "设置",
                 icon = "setting",
                 sort = 0,
                 order = Int.MAX_VALUE,
-                uid = 0,
+                uid = 0
             )
             list.add(setting)
             adapter.submitList(list)
-            // 设置-删除所有类别后，回来键盘应该是关闭的
             // TODO 是否需要修改观察的page字段？
-            if (it.isEmpty()) {
+            val set = HashSet<Int>()
+            LogUtil.d("test111", "created set: $set")
+            list.forEach { noteCategory ->
+                set.add(noteCategory.id)
+            }
+            LogUtil.d("test111", "added set: $set\n adapter.getId: ${adapter.getSelectedItemId()}")
+            // 设置-删除所有类别后 OR 删除已经选中的类别后，回来键盘应该是关闭的
+            if (it.isEmpty() || !set.contains(adapter.getSelectedItemId())) {
                 recyclerViewDown()
+                // 判断在更新的情况下，正在更新的类别id是否已经被删除。如果已经被删除，应该讲noteId设置为-1，即新增记账而不是更新记账了
+                if (viewModel.noteId > 0 && viewModel.categoryId > 0) {
+                    if (viewModel.categorySort == sort) {
+                        if (!set.contains(viewModel.categoryId)) {
+                            viewModel.noteId = -1
+                            viewModel.categoryId = -1 // 多余的
+                        }
+                    }
+                }
             }
         }
         viewModel.page.observe(this.viewLifecycleOwner) {
             recyclerViewDown()
-            val p = adapter.getSelectedPosition()
-            LogUtil.d("test20210904", "viewModel.page: $it, adapter.getSelectedPosition: $p")
-            adapter.setSelectedPosition(-1)
-            adapter.notifyItemChanged(p) // 清除选中背景
+            adapter.setSelectedItemId(-1)
+            adapter.notifyDataSetChanged() // 清除选中背景
         }
         val inputEditText = binding.view11.view12.inputEditText
         inputEditText.isFocusable = false
@@ -139,10 +188,16 @@ class SpendingFragment : Fragment(), View.OnClickListener {
         viewModel.amount.observe(this.viewLifecycleOwner) {
             binding.view11.view12.amountTextView.text = it.toString()
         }
-        viewModel.note.observe(this.viewLifecycleOwner) {
+        viewModel.info.observe(this.viewLifecycleOwner) {
             binding.view11.view12.inputEditText.setText(it)
         }
-
+        viewModel.accountItem.observe(this.viewLifecycleOwner) { account ->
+            if (account == null) {
+                binding.view11.view12.inputImageView.setImageResource(R.drawable.ic_wallet)
+            } else {
+                binding.view11.view12.inputImageView.setImageResource(IconMap.map2[account.icon] ?: R.drawable.ic_error)
+            }
+        }
         binding.view11.textView11.setOnClickListener(this) // 0
         binding.view11.textView8.setOnClickListener(this) // 1
         binding.view11.textView9.setOnClickListener(this) // 2
@@ -160,8 +215,23 @@ class SpendingFragment : Fragment(), View.OnClickListener {
         binding.view11.textView13.setOnClickListener(this) // 完成
         binding.view11.dateLayout.setOnClickListener(this) // dateLayout
         binding.view11.view12.inputImageView.setOnClickListener(this) // 选择账户
-
         initCustomTimePicker()
+
+        MainScope().launch {
+            delay(2000)
+            if (sort == viewModel.page.value) {
+                Log.d("test20211015", "noteId: ${viewModel.noteId}")
+                Log.d("test20211015", "categoryId: ${viewModel.categoryId}")
+                Log.d("test20211015", "categorySort: ${viewModel.categorySort}")
+                Log.d("test20211015", "accountItem: ${viewModel.accountItem.value}")
+                Log.d("test20211015", "date: ${viewModel.date}")
+                Log.d("test20211015", "amount: ${viewModel.amount.value}")
+                Log.d("test20211015", "info: ${viewModel.info.value}")
+                Log.d("test20211015", "page: ${viewModel.page.value}")
+                Log.d("test20211015", "oldAccountItem: ${viewModel.oldAccountItem}")
+                Log.d("test20211015", "oldAmount: ${viewModel.oldAmount}")
+            }
+        }
     }
 
     private fun getScreenHeight() = resources.displayMetrics.heightPixels
@@ -251,66 +321,93 @@ class SpendingFragment : Fragment(), View.OnClickListener {
                 }
             }
             R.id.textView15 -> {
-
             }
             R.id.textView14 -> {
-
             }
             R.id.textView12 -> {
                 viewModel.amount.value = stringBuilder.append(".").toString()
             }
             R.id.textView13 -> {
-                // TODO 验证数据有效性
-                LogUtil.d(
-                    "test083101",
-                    "${viewModel.categoryItem?.id}, ${viewModel.amount.value}, ${viewModel.date}, ${viewModel.note.value}"
-                )
-//                noteCategoryId: Int, amount: Double, date: Date, information: String, accountId: Int
-                val noteCategoryId = viewModel.categoryItem?.id ?: -1
-                val amountDouble = amount.toDouble()
+//                var amount = viewModel.amount.value
                 val date = viewModel.date
-                val information = viewModel.note.value
-                val accountId = viewModel.accountItem?.id ?: -1
-                if (viewModel.isNoteEntryValid(noteCategoryId, amountDouble, date, accountId)) {
-                    // 记账：1.更新账户记录 2.写入记账明细记录
-                    viewModel.accountItem?.let {
-                        var balance = it.balance
-                        if (sort == 0) {
-                            balance -= amountDouble
-                        } else {
-                            balance += amountDouble
+                val info = viewModel.info.value
+                val accountId = viewModel.accountItem.value?.id ?: -1
+                if (viewModel.isNoteEntryValid(viewModel.categoryId, amount)) {
+                    MainScope().launch {
+                        if (viewModel.noteId >= 0) { // 更新记账
+                            // 1. 检查是否有账户，如果有账户，将旧的记账金额逆向写回
+                            // 2. 然后按新记账的方式处理
+                            viewModel.oldAccountItem?.let { // TODO 事务
+                                val oldAmount = viewModel.oldAmount.toDouble()
+                                var balance = it.balance
+                                if (sort == 0) {
+                                    balance -= oldAmount
+                                } else {
+                                    balance += oldAmount
+                                }
+                                it.balance = balance
+                                viewModel2.update2(it)
+                            }
                         }
-                        it.balance = balance
-                        viewModel2.updateList2(listOf(it))
+                        // 普通记账：1.更新账户记录 2.写入记账明细记录
+                        val amountDouble = amount.toDouble()
+                        viewModel.accountItem.value?.let {
+                            var balance = it.balance
+                            if (sort == 0) {
+                                balance -= amountDouble
+                            } else {
+                                balance += amountDouble
+                            }
+                            it.balance = balance
+                            viewModel2.update2(it)
+                        }
+                        if (viewModel.noteId >= 0) { // 更新记账
+                            viewModel.updateNote(amount.toDouble(), date, info, accountId)
+                        } else {
+                            viewModel.addNewNote(amount.toDouble(), date, info, accountId)
+                        }
                     }
-                    viewModel.addNewNote(noteCategoryId, amountDouble, date, information, accountId)
+                    Log.d("test20211015", "noteId: ${viewModel.noteId}")
+                    Log.d("test20211015", "categoryId: ${viewModel.categoryId}")
+                    Log.d("test20211015", "categorySort: ${viewModel.categorySort}")
+                    Log.d("test20211015", "accountItem: ${viewModel.accountItem.value}")
+                    Log.d("test20211015", "date: ${viewModel.date}")
+                    Log.d("test20211015", "amount: ${viewModel.amount.value}")
+                    Log.d("test20211015", "info: ${viewModel.info.value}")
+                    Log.d("test20211015", "page: ${viewModel.page.value}")
+                    Log.d("test20211015", "oldAccountItem: ${viewModel.oldAccountItem}")
+                    Log.d("test20211015", "oldAmount: ${viewModel.oldAmount}")
                     activity?.finish()
+                } else {
+                    "输入错误".showToast()
                 }
             }
             R.id.dateLayout -> {
                 pvCustomTime1?.show()
             }
             R.id.input_imageView -> { // 选择账户
-                val saDialogFragment = SADialogFragment()
-                saDialogFragment.setOnBindViewListener(object : SADialogFragment.OnBindViewListener {
-                    override fun bindView(view: View) {
-                        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-                        val adapter = AFList1Adapter { item, _ ->
-                            binding.view11.view12.inputImageView.setImageResource(IconMap.map2[item.icon] ?: R.drawable.ic_error)
-                            viewModel.accountItem = item
-                            saDialogFragment.dismiss()
+                if (viewModel2.accountList.isNotEmpty()) {
+                    val saDialogFragment = SADialogFragment()
+                    saDialogFragment.setOnBindViewListener(object : SADialogFragment.OnBindViewListener {
+                        override fun bindView(view: View) {
+                            view.findViewById<TextView>(R.id.sad_textView1).text = "选择账户"
+                            val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+                            val adapter = SADialogList1Adapter { item, _ ->
+                                viewModel.accountItem.value = item
+                                saDialogFragment.dismiss()
+                            }
+                            recyclerView.adapter = adapter
+                            adapter.submitList(null)
+                            adapter.submitList(viewModel2.accountList)
                         }
-                        recyclerView.adapter = adapter
-                        adapter.submitList(null)
-                        adapter.submitList(viewModel2.accountList)
-                    }
-                })
-                val manager = childFragmentManager
-                val transaction = manager.beginTransaction()
-                transaction.add(saDialogFragment, "")
-                transaction.commitAllowingStateLoss()
-            }
-            else -> {
+                    })
+                    val manager = childFragmentManager
+                    val transaction = manager.beginTransaction()
+                    transaction.add(saDialogFragment, "")
+                    transaction.commitAllowingStateLoss()
+                } else {
+                    "账户为空".showToast()
+                }
             }
         }
     }
@@ -357,4 +454,5 @@ class SpendingFragment : Fragment(), View.OnClickListener {
             .setDividerColor(Color.parseColor("#e6e6e6"))
             .build()
     }
+
 }

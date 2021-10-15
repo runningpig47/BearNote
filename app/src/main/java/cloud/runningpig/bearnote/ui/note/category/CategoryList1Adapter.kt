@@ -10,7 +10,7 @@ import cloud.runningpig.bearnote.databinding.ItemCategoryListBinding
 import cloud.runningpig.bearnote.logic.model.IconMap
 import cloud.runningpig.bearnote.logic.model.NoteCategory
 
-class CategoryList1Adapter :
+class CategoryList1Adapter(private val onItemClick: (itemId: Int) -> Unit) :
     ListAdapter<NoteCategory, CategoryList1Adapter.ViewHolder>(ItemComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,6 +19,9 @@ class CategoryList1Adapter :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val noteCategory = getItem(position)
+        holder.itemView.setOnClickListener {
+            onItemClick(noteCategory.id)
+        }
         holder.binding.itemDelete.setOnClickListener {
             listener?.onItemDelete(holder.bindingAdapterPosition)
         }
@@ -29,8 +32,7 @@ class CategoryList1Adapter :
         listener?.onItemMove(position, targetPosition)
     }
 
-    class ViewHolder(val binding: ItemCategoryListBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ItemCategoryListBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(noteCategory: NoteCategory) {
             binding.apply {
@@ -60,7 +62,7 @@ class CategoryList1Adapter :
         }
 
         override fun areContentsTheSame(oldItem: NoteCategory, newItem: NoteCategory): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem == newItem
         }
     }
 

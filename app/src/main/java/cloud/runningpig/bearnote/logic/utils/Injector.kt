@@ -1,7 +1,7 @@
 package cloud.runningpig.bearnote.logic.utils
 
 import android.content.Context
-import cloud.runningpig.bearnote.BearNoteRepository
+import cloud.runningpig.bearnote.logic.BearNoteRepository
 import cloud.runningpig.bearnote.logic.dao.BearNoteDatabase
 import cloud.runningpig.bearnote.ui.note.SpendingViewModelFactory
 

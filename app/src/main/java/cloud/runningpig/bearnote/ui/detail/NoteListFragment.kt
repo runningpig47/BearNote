@@ -7,9 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import cloud.runningpig.bearnote.BearNoteApplication
-import cloud.runningpig.bearnote.BearNoteRepository
+import cloud.runningpig.bearnote.logic.BearNoteRepository
 import cloud.runningpig.bearnote.databinding.FragmentNoteListBinding
 import cloud.runningpig.bearnote.logic.dao.BearNoteDatabase
 
@@ -47,7 +46,7 @@ class NoteListFragment : Fragment() {
         _binding = FragmentNoteListBinding.inflate(inflater, container, false)
         adapter = NLFListAdapter { _, noteDetail ->
             val intent = Intent(activity, EditNoteActivity::class.java)
-            intent.putExtra("noteDetail", noteDetail)
+            intent.putExtra("noteId", noteDetail.noteId)
             startActivity(intent)
         }
         binding.fnlRecyclerView.adapter = adapter

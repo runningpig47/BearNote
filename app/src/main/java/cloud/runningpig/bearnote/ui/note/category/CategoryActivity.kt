@@ -3,15 +3,16 @@ package cloud.runningpig.bearnote.ui.note.category
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.ActivityCategoryListBinding
+import cloud.runningpig.bearnote.ui.BaseActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
-class CategoryActivity : AppCompatActivity() {
+class CategoryActivity : BaseActivity() {
 
     private var currentPage: Int = 0
 
@@ -21,6 +22,7 @@ class CategoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCategoryListBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
+        binding.aclTitleLayout.findViewById<TextView>(R.id.title_textView).text = "类别设置"
         binding.aclViewPager2.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount(): Int = 2
 
@@ -50,4 +52,5 @@ class CategoryActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 }

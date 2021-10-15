@@ -83,7 +83,7 @@
                         android:layout_marginStart="12dp"
                         android:layout_marginEnd="12dp"
                         android:layout_weight="1"
-                        android:text="-9000"
+                        tools:text="19500"
                         android:textColor="#f7647e"
                         android:textSize="22sp" />
 

@@ -2,6 +2,7 @@ package cloud.runningpig.bearnote.logic.model
 
 import androidx.room.DatabaseView
 import java.util.*
+
 // TODO '' 是否可以为NULL
 @DatabaseView(
     viewName = "transfer_detail", value =
@@ -48,7 +49,7 @@ data class TransferDetail(
     var accountId: Int, // 记账账户id & ''
     var accountName: String, // 记账账户名称 & ''
     var noteDate: Date, // 记账日期 & 转账日期
-    var information: String, // 记账备注 & 转账备注
+    var information: String, // 记账备注 & 转账备注（注意：资金调整会用这个字段记录调整金额，会转为double使用）
     var detailSort: Int,
     var fromId: Int,
     var toId: Int,

@@ -112,8 +112,8 @@ open class CustomCalendarView : FrameLayout {
                         viewHolder.getRootView().setBackgroundResource(R.drawable.rec_red)
                     } else {
                         isdTextView.setTextColor(ContextCompat.getColor(context, R.color.color_4f4f4f))
-                        isdTextView.setBackgroundResource(android.R.color.transparent)
-                        viewHolder.getRootView().setBackgroundResource(android.R.color.transparent)
+                        isdTextView.setBackgroundResource(android.R.color.white)
+                        viewHolder.getRootView().setBackgroundResource(android.R.color.white)
                     }
 
                     // TODO 模拟的备忘position
@@ -127,7 +127,7 @@ open class CustomCalendarView : FrameLayout {
                     isdTextView2.text = ""
                     isdTextView.setTextColor(ContextCompat.getColor(context, R.color.color_bababa))
                     isdTextView.setBackgroundResource(R.color.white)
-                    viewHolder.getRootView().setBackgroundResource(android.R.color.transparent)
+                    viewHolder.getRootView().setBackgroundResource(android.R.color.white)
                     if (isdTextView2.visibility != INVISIBLE) {
                         isdTextView2.visibility = INVISIBLE
                     }

@@ -3,14 +3,16 @@ package cloud.runningpig.bearnote.ui.detail
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.SpannableString
+import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import cloud.runningpig.bearnote.BearNoteApplication
-import cloud.runningpig.bearnote.BearNoteRepository
+import cloud.runningpig.bearnote.logic.BearNoteRepository
 import cloud.runningpig.bearnote.logic.model.*
+import cloud.runningpig.bearnote.logic.utils.showToast
 import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.coroutines.launch
 import java.util.*
@@ -28,6 +30,10 @@ class DetailViewModel(private val bearNoteRepository: BearNoteRepository) : View
         val endOfDay = getEndOfDay(it)
         bearNoteRepository.queryByDate(startOfDay, endOfDay).asLiveData()
     }
+
+    fun queryById(noteId: Int) = bearNoteRepository.queryById(noteId).asLiveData()
+
+    fun queryById2(noteId: Int) = bearNoteRepository.queryById(noteId)
 
     val page = MutableLiveData(0)
 
@@ -125,24 +131,45 @@ class DetailViewModel(private val bearNoteRepository: BearNoteRepository) : View
      * 以下为账户模块代码
      */
 
-    // TODO 验证输入信息
-    fun accountEntryValid(name: String, icon: String, balance: Double, information: String, order: Int): Boolean {
+    // 验证账户输入信息
+    fun accountEntryValid(name: String?, balance: String?): Boolean {
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(balance)) {
+            return false
+        }
+        try {
+            balance?.toDouble() // 账户余额的文字可以转换成double
+        } catch (ignore: Exception) {
+            "账户余额输入错误".showToast()
+            return false
+        }
         return true
     }
 
-    private fun getNewAccount(name: String, icon: String, balance: Double, information: String, order: Int): Account {
-        return Account(
-            name = name,
-            icon = icon,
-            balance = balance,
-            information = information,
-            order = order,
-            uid = BearNoteApplication.uid,
-        )
+    private fun getNewAccount(name: String, icon: String, balance: Double, information: String, order: Int, id: Int = -1): Account {
+        if (id == -1) { // 不手动指定id，新增元素
+            return Account(
+                name = name,
+                icon = icon,
+                balance = balance,
+                information = information,
+                order = order,
+                uid = BearNoteApplication.uid,
+            )
+        } else { // 指定id，说明是更新某个id的元素
+            return Account(
+                id = id,
+                name = name,
+                icon = icon,
+                balance = balance,
+                information = information,
+                order = order,
+                uid = BearNoteApplication.uid,
+            )
+        }
     }
 
     private fun insert(account: Account) = viewModelScope.launch {
-        bearNoteRepository.insert(account)
+        bearNoteRepository.insertAccount(account)
     }
 
     fun addNewAccount(name: String, icon: String, balance: Double, information: String, order: Int) {
@@ -150,9 +177,21 @@ class DetailViewModel(private val bearNoteRepository: BearNoteRepository) : View
         insert(account)
     }
 
+    fun update(account: Account) = viewModelScope.launch {
+        bearNoteRepository.update(account)
+    }
+
+    suspend fun update2(account: Account) = bearNoteRepository.update(account)
+
+
+    fun updateAccount(id: Int, name: String, icon: String, balance: Double, information: String, order: Int) {
+        val account = getNewAccount(name, icon, balance, information, order, id)
+        update(account)
+    }
+
     fun queryMaxOrder2() = bearNoteRepository.queryMaxOrder2().asLiveData()
 
-    var accountList: List<Account> = ArrayList()
+    lateinit var accountList: List<Account>
     fun loadAccount() = bearNoteRepository.loadAccount().asLiveData()
 
     fun updateList2(list: List<Account>) = viewModelScope.launch {
@@ -164,9 +203,11 @@ class DetailViewModel(private val bearNoteRepository: BearNoteRepository) : View
     var to: Account? = null
     var mDate = Date()
 
-    // TODO 检查转账输入信息是否有效
-    fun transferEntryValid(fromId: Int?, toId: Int?, amount: Double?, info: String?, date: Date?): Boolean {
-        return true
+    fun transferEntryValid(fromId: Int?, toId: Int?, amount: String?): Boolean {
+        if (fromId != null && toId != null && amount != null) {
+            return true
+        }
+        return false
     }
 
     private fun insertTransfer(transfer: Transfer) = viewModelScope.launch {
@@ -194,6 +235,20 @@ class DetailViewModel(private val bearNoteRepository: BearNoteRepository) : View
         val startOfMonth = getStartOfMonth(it)
         val endOfMonth = getEndOfMonth(it)
         bearNoteRepository.queryByDate2(accountId, startOfMonth, endOfMonth).asLiveData()
+    }
+
+    fun sumBalance() = bearNoteRepository.sumBalance().asLiveData()
+
+    fun queryByAid2(aid: Int) = bearNoteRepository.queryByAid2(aid).asLiveData()
+
+    suspend fun queryByAid3(aid: Int) = bearNoteRepository.queryByAid3(aid)
+
+    fun deleteAccount(aid: Int) = viewModelScope.launch {
+        bearNoteRepository.deleteAccount(aid)
+    }
+
+    fun deleteNote(noteId: Int) = viewModelScope.launch {
+        bearNoteRepository.deleteNote(noteId)
     }
 
 }

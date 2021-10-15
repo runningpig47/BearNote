@@ -11,13 +11,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import cloud.runningpig.bearnote.databinding.ActivityMainBinding
+import cloud.runningpig.bearnote.ui.BaseActivity
 import cloud.runningpig.bearnote.ui.assets.AssetsFragment
 import cloud.runningpig.bearnote.ui.chart.ChartFragment
 import cloud.runningpig.bearnote.ui.detail.DetailFragment
 import cloud.runningpig.bearnote.ui.note.NoteActivity
 import cloud.runningpig.bearnote.ui.personal.PersonalFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var fragments: ArrayList<Fragment>
     private var _binding: ActivityMainBinding? = null
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentAdapter = FragmentAdapter(supportFragmentManager, lifecycle, fragments)
         binding.viewPager2.adapter = fragmentAdapter
         binding.viewPager2.isUserInputEnabled = false
-//        binding.viewPager2.offscreenPageLimit = 3
+        binding.viewPager2.offscreenPageLimit = 3
     }
 
     private fun initEvent() {

@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import cloud.runningpig.bearnote.BearNoteApplication
-import cloud.runningpig.bearnote.BearNoteRepository
+import cloud.runningpig.bearnote.logic.BearNoteRepository
 import cloud.runningpig.bearnote.R
 import cloud.runningpig.bearnote.databinding.DetailFragmentBinding
 import cloud.runningpig.bearnote.logic.dao.BearNoteDatabase
@@ -54,6 +54,7 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
+        binding.dfViewPager2.isUserInputEnabled = false
         binding.dfViewPager2.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount(): Int = 2
 

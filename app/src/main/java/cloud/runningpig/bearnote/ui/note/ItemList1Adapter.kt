@@ -14,43 +14,43 @@ import cloud.runningpig.bearnote.logic.utils.LogUtil
 
 class ItemList1Adapter(private val onItemClick: (position: Int, item: NoteCategory?) -> Unit) :
     ListAdapter<NoteCategory, ItemList1Adapter.ViewHolder>(ItemComparator()) {
-    private var mSelectedPosition: Int = -1
 
-    fun setSelectedPosition(p: Int) {
-        mSelectedPosition = p
+    private var mSelectedItemId: Int = -1
+
+    fun setSelectedItemId(id: Int) {
+        mSelectedItemId = id
     }
 
-    fun getSelectedPosition() = mSelectedPosition
+    fun getSelectedItemId(): Int {
+        return mSelectedItemId
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.create(parent)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val noteCategory = getItem(position)
         holder.itemView.setOnClickListener {
-            // TODO 添加或删除数据后，参数中的position点击获取到的还是旧数据的position
+            // TODO LEARN 添加或删除数据后，参数中的position点击获取到的还是旧数据的position
             if (holder.bindingAdapterPosition != currentList.lastIndex) {
+                mSelectedItemId = noteCategory.id
                 onItemClick(position, noteCategory)
-                mSelectedPosition = holder.bindingAdapterPosition
                 notifyDataSetChanged()
             } else {
                 onItemClick(-1, null)
             }
         }
-        holder.bind(noteCategory, position, mSelectedPosition)
+        holder.bind(noteCategory, mSelectedItemId)
     }
 
-    class ViewHolder(private var binding: CategoryItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private var binding: CategoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(noteCategory: NoteCategory, p1: Int, p2: Int) {
+        fun bind(noteCategory: NoteCategory, mSelectedItemId: Int) {
             binding.apply {
                 textView.text = noteCategory.name
                 imageView.setImageResource(IconMap.map[noteCategory.icon] ?: R.drawable.ic_error)
-                LogUtil.d("test20210904", "p1: $p1, p2: $p2")
-                if (p1 == p2) {
+                if (noteCategory.id == mSelectedItemId) {
                     imageView.setBackgroundResource(R.drawable.oval_solid_ff5722)
                 } else {
                     imageView.setBackgroundResource(R.drawable.oval_solid_f5f5f5)
@@ -63,15 +63,17 @@ class ItemList1Adapter(private val onItemClick: (position: Int, item: NoteCatego
                 return ViewHolder(CategoryItemBinding.inflate(LayoutInflater.from(parent.context)))
             }
         }
+
     }
 
     class ItemComparator : DiffUtil.ItemCallback<NoteCategory>() {
+
         override fun areItemsTheSame(oldItem: NoteCategory, newItem: NoteCategory): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: NoteCategory, newItem: NoteCategory): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem == newItem
         }
     }
 

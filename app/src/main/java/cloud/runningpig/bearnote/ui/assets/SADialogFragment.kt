@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import cloud.runningpig.bearnote.R
+import cloud.runningpig.bearnote.logic.utils.ViewUtil
 
 class SADialogFragment : DialogFragment() {
 
@@ -31,7 +32,7 @@ class SADialogFragment : DialogFragment() {
                 setBackgroundDrawable(ColorDrawable(Color.WHITE))
                 val layoutParams = attributes
                 layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
-                layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+                layoutParams.height = ViewUtil.dp2px(context, 320f)
                 layoutParams.gravity = Gravity.BOTTOM
                 layoutParams.dimAmount = 0.2f
                 attributes = layoutParams

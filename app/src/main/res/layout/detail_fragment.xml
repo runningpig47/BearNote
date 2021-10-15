@@ -7,192 +7,181 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.detail.DetailFragment">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffda44"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:paddingStart="12dp"
-            android:paddingTop="6dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="6dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical">
+                android:background="#ffda44"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="6dp"
+                app:layout_scrollFlags="scroll">
 
-                <TextView
-                    android:id="@+id/df_textView1"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="#3e332d"
-                    android:textSize="24sp"
-                    tools:text="2021年9月" />
+                    android:layout_weight="2"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name_cn"
-                    android:textColor="#3e332d"
-                    android:textSize="14sp"
-                    app:drawableEndCompat="@drawable/ic_personal_brown" />
+                    <TextView
+                        android:id="@+id/df_textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3e332d"
+                        android:textSize="24sp"
+                        tools:text="2021年9月" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name_cn"
+                        android:textColor="#3e332d"
+                        android:textSize="14sp"
+                        app:drawableEndCompat="@drawable/ic_personal_brown" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/df_linearLayout1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|bottom"
+                    android:orientation="vertical"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_left"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/lastMonth"
+                        android:textColor="#3e332d"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/df_linearLayout2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|bottom"
+                    android:orientation="vertical"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_right"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/nextMonth"
+                        android:textColor="#3e332d"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/df_linearLayout3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|bottom"
+                    android:orientation="vertical"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_today"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/today"
+                        android:textColor="#3e332d"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </LinearLayout>
 
-
-            <LinearLayout
-                android:id="@+id/df_linearLayout1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center|bottom"
-                android:orientation="vertical"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_left"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/lastMonth"
-                    android:textColor="#3e332d"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/df_linearLayout2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center|bottom"
-                android:orientation="vertical"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_right"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/nextMonth"
-                    android:textColor="#3e332d"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/df_linearLayout3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center|bottom"
-                android:orientation="vertical"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_today"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/today"
-                    android:textColor="#3e332d"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <cloud.runningpig.bearnote.ui.custom.CustomCalendarView
-            android:id="@+id/df_customCalendarView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-        <TextView
-            android:id="@+id/df_textView2"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:background="#f7f7f7"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:paddingStart="12dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="5dp"
-            android:singleLine="true"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/df_tabLayout"
-            app:layout_constraintEnd_toStartOf="@+id/df_tabLayout"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/df_tabLayout"
-            tools:text="9月3日(星期五)" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/df_tabLayout"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:background="#ffda44"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/df_textView2"
-            app:layout_constraintTop_toBottomOf="@+id/df_customCalendarView"
-            app:tabIndicatorColor="#000000"
-            app:tabTextAppearance="@style/tabText"
-            app:tabTextColor="#000000">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+            <cloud.runningpig.bearnote.ui.custom.CustomCalendarView
+                android:id="@+id/df_customCalendarView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/note" />
+                app:layout_scrollFlags="scroll" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/information" />
+                android:orientation="horizontal">
 
-        </com.google.android.material.tabs.TabLayout>
+                <TextView
+                    android:id="@+id/df_textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="#f7f7f7"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingStart="12dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="5dp"
+                    android:singleLine="true"
+                    android:textSize="20sp"
+                    tools:text="9月3日(星期五)" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/df_tabLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="#ffda44"
+                    app:tabIndicatorColor="#000000"
+                    app:tabTextAppearance="@style/tabText"
+                    app:tabTextColor="#000000">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/note" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/information" />
+
+                </com.google.android.material.tabs.TabLayout>
+            </LinearLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/df_viewPager2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider12" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <View
-            android:id="@+id/divider12"
-            android:layout_width="0dp"
-            android:layout_height="1px"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/df_textView2" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

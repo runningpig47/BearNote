@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import cloud.runningpig.bearnote.BearNoteApplication
-import cloud.runningpig.bearnote.BearNoteRepository
+import cloud.runningpig.bearnote.logic.BearNoteRepository
 import cloud.runningpig.bearnote.databinding.FragmentChartSpendingBinding
 import cloud.runningpig.bearnote.logic.dao.BearNoteDatabase
 import cloud.runningpig.bearnote.logic.model.ChartMonthBean

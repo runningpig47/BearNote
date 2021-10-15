@@ -22,8 +22,19 @@ abstract class BearNoteDatabase : RoomDatabase() {
         RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            INSTANCE?.let {
-            }
+
+//            db.execSQL(
+//                "CREATE TRIGGER delete_cid_note BEFORE DELETE ON note_category FOR EACH ROW " +
+//                        "BEGIN " +
+//                        "DELETE FROM note WHERE note_category_id = old.id; " +
+//                        "END; "
+//
+//                        "CREATE TRIGGER update_aid_minus INSTEAD OF DELETE ON note_detail FOR EACH ROW WHEN old.accountId > -1 " +
+//                        "BEGIN " +
+//                        "UPDATE account SET balance = balance + 666; " +
+//                        "END; "
+//            )
+
         }
     }
 

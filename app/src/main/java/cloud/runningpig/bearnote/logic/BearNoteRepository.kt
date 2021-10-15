@@ -1,4 +1,4 @@
-package cloud.runningpig.bearnote
+package cloud.runningpig.bearnote.logic
 
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
@@ -14,11 +14,12 @@ import kotlinx.coroutines.coroutineScope
 import java.util.*
 
 class BearNoteRepository private constructor(
-    private val noteCategoryDao: NoteCategoryDao, private val noteDao: NoteDao) {
+    private val noteCategoryDao: NoteCategoryDao, private val noteDao: NoteDao
+) {
+
+    fun loadById(id: Int) = noteCategoryDao.loadById(id)
 
     fun loadBySort(sort: Int) = noteCategoryDao.loadBySort(sort)
-
-    // ...
 
     suspend fun updateList(list: List<NoteCategory>) = noteCategoryDao.updateList(list)
 
@@ -28,10 +29,20 @@ class BearNoteRepository private constructor(
 
     suspend fun insert(noteCategory: NoteCategory) = noteCategoryDao.insert(noteCategory)
 
+    suspend fun update(noteCategory: NoteCategory) = noteCategoryDao.update(noteCategory)
+
+    suspend fun countCid(id: Int) = noteCategoryDao.countCid(id)
+
+    suspend fun deleteNoteCategory(cid: Int) = noteCategoryDao.deleteNoteCategory(cid)
+
     /** 记账相关 */
     suspend fun insertNote(note: Note) = noteDao.insert(note)
 
+    suspend fun updateNote(note: Note) = noteDao.update(note)
+
     fun queryByDate(from: Date, to: Date) = noteDao.queryByDate(from, to)
+
+    fun queryById(noteId: Int) = noteDao.queryById(noteId)
 
     /** 图表按月查询View */
     fun queryByMonth(sort: Int, from: Date, to: Date) = noteDao.queryByMonth(sort, from, to)
@@ -49,7 +60,9 @@ class BearNoteRepository private constructor(
 
     /** 账户相关 */
 
-    suspend fun insert(account: Account) = noteCategoryDao.insert(account)
+    suspend fun insertAccount(account: Account) = noteCategoryDao.insertAccount(account)
+
+    suspend fun update(account: Account) = noteCategoryDao.update(account)
 
     fun queryMaxOrder2() = noteCategoryDao.queryMaxOrder2()
 
@@ -60,6 +73,16 @@ class BearNoteRepository private constructor(
     suspend fun insertTransfer(transfer: Transfer) = noteCategoryDao.insertTransfer(transfer)
 
     fun queryByDate2(accountId: Int, from: Date, to: Date) = noteCategoryDao.queryByDate2(accountId, from, to)
+
+    fun sumBalance() = noteCategoryDao.sumBalance()
+
+    fun queryByAid2(aid: Int) = noteCategoryDao.queryByAid2(aid)
+
+    suspend fun queryByAid3(aid: Int) = noteCategoryDao.queryByAid(aid)
+
+    suspend fun deleteAccount(aid: Int) = noteCategoryDao.deleteAccount(aid)
+
+    suspend fun deleteNote(noteId: Int) = noteCategoryDao.deleteNote(noteId)
 
     companion object {
         @Volatile

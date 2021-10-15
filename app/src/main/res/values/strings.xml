@@ -14,4 +14,10 @@
     <string name="lastMonth">上月</string>
     <string name="nextMonth">下月</string>
     <string name="today">今日</string>
+    <string name="delete_question">删除类别会同时删除该类别下的所有记账明细</string>
+    <string name="delete_question2">删除账户会同时删除该账户下的所有记账明细与转账记录</string>
+    <string name="delete_question3">是否删除该记账?</string>
+    <string name="no">取消</string>
+    <string name="yes">确定</string>
+    <string name="save">保存</string>
 </resources>
