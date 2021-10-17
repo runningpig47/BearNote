@@ -160,4 +160,14 @@ interface NoteCategoryDao {
         }
         deleteNoteById(noteDetail.noteId) // 账户资金回滚完毕，删除该记账
     }
+
+    @Insert
+    suspend fun insertUser(user: User)
+
+    @Query("SELECT * FROM user")
+    fun selectUser(): Flow<User>
+
+    @Query("DELETE FROM user")
+    suspend fun deleteUser()
+
 }

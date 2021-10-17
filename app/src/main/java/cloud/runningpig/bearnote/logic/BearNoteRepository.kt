@@ -4,14 +4,13 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import cloud.runningpig.bearnote.logic.dao.NoteCategoryDao
 import cloud.runningpig.bearnote.logic.dao.NoteDao
-import cloud.runningpig.bearnote.logic.model.Account
-import cloud.runningpig.bearnote.logic.model.Note
-import cloud.runningpig.bearnote.logic.model.NoteCategory
-import cloud.runningpig.bearnote.logic.model.Transfer
+import cloud.runningpig.bearnote.logic.model.*
+import cloud.runningpig.bearnote.logic.network.BearNoteNetwork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 class BearNoteRepository private constructor(
     private val noteCategoryDao: NoteCategoryDao, private val noteDao: NoteDao
@@ -95,5 +94,28 @@ class BearNoteRepository private constructor(
                 instance
             }
     }
+
+    private fun <T> fire(
+        context: CoroutineContext = Dispatchers.IO,
+        block: suspend () -> Result<T>
+    ) =
+        liveData(context) {
+            val result = try {
+                block()
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+            emit(result)
+        }
+
+    suspend fun addUser(user: User) = BearNoteNetwork.addUser(user)
+
+    suspend fun login(username: String, password: String) = BearNoteNetwork.login(username, password)
+
+    suspend fun insertUser(user: User) = noteCategoryDao.insertUser(user)
+
+    fun selectUser() = noteCategoryDao.selectUser()
+
+    suspend fun deleteUser() = noteCategoryDao.deleteUser()
 
 }

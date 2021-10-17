@@ -425,6 +425,7 @@ class SpendingFragment : Fragment(), View.OnClickListener {
         val startDate = Calendar.getInstance()
         startDate.set(2018, 0, 1)
         val endDate = Calendar.getInstance()
+        endDate.set(2099, 11, 31)
         //时间选择器，自定义布局
         pvCustomTime1 = TimePickerBuilder(context) { date, _ -> //选中事件回调
             val format = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)

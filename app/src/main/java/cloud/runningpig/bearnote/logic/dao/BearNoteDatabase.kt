@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import cloud.runningpig.bearnote.logic.model.*
 
 @Database(
-    entities = [NoteCategory::class, Note::class, Account::class, Transfer::class],
+    entities = [NoteCategory::class, Note::class, Account::class, Transfer::class, User::class],
     views = [NoteDetail::class, TransferDetail::class], version = 1
 )
 @TypeConverters(Converters::class)

@@ -251,6 +251,28 @@ class DetailViewModel(private val bearNoteRepository: BearNoteRepository) : View
         bearNoteRepository.deleteNote(noteId)
     }
 
+    suspend fun addUser(user: User) = bearNoteRepository.addUser(user)
+
+    suspend fun login(username: String, password: String) = bearNoteRepository.login(username, password)
+
+    fun userEntryValid(username: String, password: String, nickname: String): Boolean {
+        return !(TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(nickname))
+    }
+
+    fun loginEntryValid(username: String, password: String): Boolean {
+        return !(TextUtils.isEmpty(username) || TextUtils.isEmpty(password))
+    }
+
+    fun insertUser(user: User) = viewModelScope.launch {
+        bearNoteRepository.insertUser(user)
+    }
+
+    fun selectUser() = bearNoteRepository.selectUser().asLiveData()
+
+    fun deleteUser() = viewModelScope.launch {
+        bearNoteRepository.deleteUser()
+    }
+
 }
 
 class DetailViewModelFactory(private val bearNoteRepository: BearNoteRepository) :

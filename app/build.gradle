@@ -68,6 +68,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version" // Retrofit
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
 }
 
 
